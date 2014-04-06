@@ -1,0 +1,27 @@
+{
+    "name": "ixudra/curl",
+    "description": "Custom PHP Curl library - developer by Ixudra",
+    "version": "0.1.0",
+    "keywords": ["Ixudra", "Laravel", "Curl"],
+    "homepage": "http://ixudra.be",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Jan Oris",
+            "email": "jan.oris@ixudra.be"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0",
+        "illuminate/support": "4.1.*"
+    },
+    "autoload": {
+        "classmap": [
+            "src/migrations"
+        ],
+        "psr-0": {
+            "Ixudra\\Curl\\": "src/"
+        }
+    },
+    "minimum-stability": "stable"
+}

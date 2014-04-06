@@ -1,4 +1,4 @@
 Curl
 ====
 
-Custom PHP Curl library
+Custom PHP Curl library - developed by Ixudra
