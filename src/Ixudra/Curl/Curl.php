@@ -14,7 +14,6 @@ class Curl {
         'USER_AGENT'            => '',
         'URL'                   => '',
         'POST'                  => false,
-        'POST_FIELDS'           => array(),
         'HTTP_HEADER'           => array()
     );
 
