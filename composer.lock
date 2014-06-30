@@ -1,38 +1,37 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file"
+        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "This file is @generated automatically"
     ],
-    "hash": "84b7123bdbbf9516c741d8e4be37a49f",
+    "hash": "a02f5d3508c98b7d3c22c2750bde1aba",
     "packages": [
         {
             "name": "illuminate/support",
-            "version": "v4.1.25",
+            "version": "v4.2.6",
             "target-dir": "Illuminate/Support",
             "source": {
                 "type": "git",
                 "url": "https://github.com/illuminate/support.git",
-                "reference": "69b248f240719e8d764ee6ec0384819fa57d60bb"
+                "reference": "d59811c8d3e0b7c2b9ffd2c480e698b3352472d0"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/illuminate/support/zipball/69b248f240719e8d764ee6ec0384819fa57d60bb",
-                "reference": "69b248f240719e8d764ee6ec0384819fa57d60bb",
+                "url": "https://api.github.com/repos/illuminate/support/zipball/d59811c8d3e0b7c2b9ffd2c480e698b3352472d0",
+                "reference": "d59811c8d3e0b7c2b9ffd2c480e698b3352472d0",
                 "shasum": ""
             },
             "require": {
-                "php": ">=5.3.0"
+                "php": ">=5.4.0"
             },
             "require-dev": {
-                "jeremeamia/superclosure": "1.0.*",
-                "mockery/mockery": "0.9.*",
-                "patchwork/utf8": "1.1.*",
-                "phpunit/phpunit": "4.0.*"
+                "jeremeamia/superclosure": "~1.0",
+                "patchwork/utf8": "1.1.*"
             },
             "type": "library",
             "extra": {
                 "branch-alias": {
-                    "dev-master": "4.1-dev"
+                    "dev-master": "4.2-dev"
                 }
             },
             "autoload": {
@@ -52,10 +51,10 @@
                     "name": "Taylor Otwell",
                     "email": "taylorotwell@gmail.com",
                     "homepage": "https://github.com/taylorotwell",
-                    "role": "Developer"
+                    "role": "Creator of Laravel"
                 }
             ],
-            "time": "2014-03-22 20:29:54"
+            "time": "2014-06-29 00:06:59"
         }
     ],
     "packages-dev": [
