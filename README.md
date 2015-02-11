@@ -16,7 +16,7 @@ Pull this package in through Composer.
 
     {
         "require": {
-            "ixudra/curl": "0.1.*"
+            "ixudra/curl": "0.2.*"
         }
     }
 
