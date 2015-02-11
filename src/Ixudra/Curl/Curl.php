@@ -45,7 +45,7 @@ class Curl {
         $this->options[ 'POST' ] = $method;
     }
 
-    public function setPostParameters(array $parameters)
+    public function setPostParameters($parameters)
     {
         $this->options[ 'POST' ] = true;
         $this->options[ 'POST_FIELDS' ] = $parameters;
