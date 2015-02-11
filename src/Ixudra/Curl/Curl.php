@@ -3,9 +3,9 @@
 
 class Curl {
 
-    protected $_curlObject = null;
+    protected $curlObject = null;
 
-    protected $_options = array(
+    protected $options = array(
         'RETURN_TRANSFER'       => true,
         'FAIL_ON_ERROR'         => true,
         'FOLLOW_LOCATION'       => false,
@@ -20,42 +20,52 @@ class Curl {
 
     public function send()
     {
-        $this->_curlObject = curl_init();
-        $options = $this->_forgeOptions();
-        curl_setopt_array( $this->_curlObject, $options );
+        $this->curlObject = curl_init();
+        $options = $this->forgeOptions();
+        curl_setopt_array( $this->curlObject, $options );
 
-        $response = curl_exec($this->_curlObject);
-        curl_close( $this->_curlObject );
+        $response = curl_exec( $this->curlObject );
+        curl_close( $this->curlObject );
 
         return $response;
     }
 
-    public function setUrl($url)
+    public function setUrl($baseUrl, $getParameters = array())
     {
-        $this->_options['URL'] = $url;
+        $parameterString = '';
+        if( is_array($getParameters) && count($getParameters) != 0 ) {
+            $parameterString = '?'. http_build_query($getParameters);
+        }
+
+        return $this->options[ 'URL' ] = $baseUrl . $parameterString;
     }
 
     public function setMethod($method)
     {
-        $this->_options['POST'] = $method;
+        $this->options[ 'POST' ] = $method;
     }
 
     public function setPostParameters(array $parameters)
     {
-        $this->_options['POST'] = true;
-        $this->_options['POST_FIELDS'] = $parameters;
+        $this->options[ 'POST' ] = true;
+        $this->options[ 'POST_FIELDS' ] = $parameters;
     }
 
-    protected function _forgeOptions()
+    public function addOption($key, $value)
+    {
+        $this->options[ $key ] = $value;
+    }
+
+    protected function forgeOptions()
     {
         $results = array();
-        foreach( $this->_options as $key => $value ) {
+        foreach( $this->options as $key => $value ) {
             $array_key = constant( 'CURLOPT_' . str_replace('_', '', $key) );
 
-            if( $key == 'POST_FIELDS' && is_array($value) ) {
-                $results[$array_key] = http_build_query($value, NULL, '&');
+            if( $key == 'POST_FIELDS' && is_array( $value ) ) {
+                $results[ $array_key ] = http_build_query( $value, null, '&' );
             } else {
-                $results[$array_key] = $value;
+                $results[ $array_key ] = $value;
             }
         }
 
