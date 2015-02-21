@@ -1,7 +1,7 @@
 {
     "name": "ixudra/curl",
-    "description": "Custom PHP Curl library - developer by Ixudra",
-    "version": "0.2.2",
+    "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
+    "version": "5.0.0",
     "keywords": ["Ixudra", "Laravel", "Curl"],
     "homepage": "http://ixudra.be",
     "license": "MIT",
@@ -14,8 +14,8 @@
     ],
 
     "require": {
-        "php": ">=5.3.0",
-        "illuminate/support": "4.2.*"
+        "php": ">=5.4.0",
+        "illuminate/support": "5.0.*"
     },
 
     "autoload": {

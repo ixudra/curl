@@ -10,15 +10,6 @@ class CurlServiceProvider extends ServiceProvider {
      */
     protected $defer = false;
 
-
-    /**
-     * @return void
-     */
-    public function boot()
-    {
-        $this->package('ixudra/curl');
-    }
-
     /**
      * @return void
      */
