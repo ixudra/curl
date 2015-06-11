@@ -21,7 +21,7 @@ Pull this package in through Composer.
 
 ```
 
-Add the service provider to your `Config/app.php` file:
+Add the service provider to your `config/app.php` file:
 
 ```php
 
@@ -30,11 +30,11 @@ Add the service provider to your `Config/app.php` file:
         //...
         'Ixudra\Curl\CurlServiceProvider',
 
-    )
+    ),
 
 ```
 
-Add the facade to your `Config/app.php` file:
+Add the facade to your `config/app.php` file:
 
 ```php
 
@@ -43,7 +43,7 @@ Add the facade to your `Config/app.php` file:
         //...
         'Curl'          => 'Ixudra\Curl\Facades\Curl',
 
-    )
+    ),
 
 ```
 
