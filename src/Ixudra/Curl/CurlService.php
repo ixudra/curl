@@ -3,15 +3,19 @@
 
 class CurlService {
 
-    public function get($url, $getParameters = array(), $isJson = false)
+    public function get($url, $getParameters = array(), $isJson = false, $curlOptions = array())
     {
         $curl = new Curl();
         $curl->setUrl( $url, $getParameters );
 
+        foreach( $curlOptions as $key => $value ) {
+            $curl->addOption( $key, $value );
+        }
+
         return $this->send( $curl, $isJson );
     }
 
-    public function post($url, $getParameters = array(), $postParameters, $isJson = false)
+    public function post($url, $getParameters = array(), $postParameters, $isJson = false, $curlOptions = array())
     {
         $curl = new Curl();
         $curl->setUrl( $url, $getParameters );
@@ -23,6 +27,10 @@ class CurlService {
         }
 
         $curl->setPostParameters( $postParameters );
+
+        foreach( $curlOptions as $key => $value ) {
+            $curl->addOption( $key, $value );
+        }
 
         return $this->send( $curl, $isJson );
     }
