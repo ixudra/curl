@@ -1,7 +1,7 @@
 ixudra/curl
 ================
 
-Custom PHP curl library for the Laravel 5 framework - developed by [Ixudra](http://ixudra.be).
+Custom PHP curl library for the Laravel 4 and 5 framework - developed by [Ixudra](http://ixudra.be).
 
 This package can be used by anyone at any given time, but keep in mind that it is optimized for my personal custom workflow. It may not suit your project perfectly and modifications may be in order.
 
@@ -20,6 +20,7 @@ Pull this package in through Composer.
     }
 
 ```
+### Laravel 4.* Integration
 
 Add the service provider to your `config/app.php` file:
 
@@ -47,16 +48,43 @@ Add the facade to your `config/app.php` file:
 
 ```
 
+### Laravel 5.* Integration
+
+Add the service provider to your `config/app.php` file:
+
+```php
+
+    'providers'     => array(
+
+        //...
+        Ixudra\Curl\CurlServiceProvider::class,
+
+    ),
+
+```
+
+Add the facade to your `config/app.php` file:
+
+```php
+
+    'facades'       => array(
+
+        //...
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
+
+    ),
+
+```
 
 
 ## Usage
 
 ### GET requests
 
-The package provides an easy interface for sending CURL requests from your application. Optionally, you can also 
-include several `GET` parameters that will automatically be added to the base URL by the package automatically. Lastly, 
-the package also has a parameter that allows you to easily mark a request as a JSON requests. The package will 
-automatically handle the conversion from and to JSON to PHP if needed. The default value of this parameter is `false`. 
+The package provides an easy interface for sending CURL requests from your application. Optionally, you can also
+include several `GET` parameters that will automatically be added to the base URL by the package automatically. Lastly,
+the package also has a parameter that allows you to easily mark a request as a JSON requests. The package will
+automatically handle the conversion from and to JSON to PHP if needed. The default value of this parameter is `false`.
 The last parameter can be used to pass additional CURL parameters to the request:
 
 ```php
@@ -75,7 +103,7 @@ The last parameter can be used to pass additional CURL parameters to the request
 
 ```
 
-The package will automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does 
+The package will automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does
 not perform any validation on the CURL options. Additional information about available CURL options can be found
 [here](http://php.net/manual/en/function.curl-setopt.php).
 
@@ -83,10 +111,10 @@ not perform any validation on the CURL options. Additional information about ava
 
 ### POST requests
 
-The package also allows you to send `POST` requests for your application. The first and second parameter are 
+The package also allows you to send `POST` requests for your application. The first and second parameter are
 identical to the `Curl::get()` method. The `POST` parameters can be passed on as the third parameter. The fourth
-parameter can be used to mark the request as a JSON requests. The package will automatically handle the conversion 
-from and to JSON to PHP is needed. The default value of this parameter is `false`. The last parameter can be used to 
+parameter can be used to mark the request as a JSON requests. The package will automatically handle the conversion
+from and to JSON to PHP is needed. The default value of this parameter is `false`. The last parameter can be used to
 pass additional CURL parameters to the request:
 
 ```php
