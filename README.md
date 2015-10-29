@@ -22,6 +22,7 @@ Pull this package in through Composer.
 
 ```
 
+
 ### Laravel 5.* Integration
 
 Add the service provider to your `config/app.php` file:
@@ -78,7 +79,6 @@ Add the facade to your `app/config/app.php` file:
     ),
 
 ```
-
 
 ### Integration without Laravel
 
