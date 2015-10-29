@@ -45,4 +45,11 @@ class CurlService {
         return $response;
     }
 
+    public function to($url)
+    {
+        $builder = new Builder();
+
+        return $builder->to($url);
+    }
+
 }

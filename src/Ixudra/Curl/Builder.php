@@ -18,7 +18,6 @@ class Builder {
     );
 
     protected $packageOptions = array(
-        'url'                   => '',
         'parameters'            => array(),
         'asJson'                => false,
     );
@@ -30,7 +29,7 @@ class Builder {
      */
     public function to($url)
     {
-        return $this;
+        return $this->withCurlOption( 'URL', $url );
     }
 
     /**
@@ -39,7 +38,17 @@ class Builder {
      */
     public function withTimeout($timeout = 30)
     {
-        return $this;
+        return $this->withCurlOption( 'TIMEOUT', $timeout );
+    }
+
+    /**
+     *  Add GET or POST data to the request
+     * @param $data array   Array of data that is to be sent along wiht the request
+     * @return $this
+     */
+    public function withData($data = array())
+    {
+        return $this->withPackageOption( 'data', $data );
     }
 
     /**
@@ -48,7 +57,7 @@ class Builder {
      */
     public function asJson()
     {
-        return $this;
+        return $this->withPackageOption( 'asJson', true );
     }
 
     /**
@@ -68,7 +77,43 @@ class Builder {
      */
     public function withOption($key, $value)
     {
+        return $this->withCurlOption( $key, $value );
+    }
+
+    /**
+     *  Set any specific cURL option
+     * @param $key string       The name of the cURL option
+     * @param $value string     The value to which the option is to be set
+     * @return $this
+     */
+    protected function withCurlOption($key, $value)
+    {
+        $this->curlOptions[ $key ] = $value;
+
         return $this;
+    }
+
+    /**
+     *  Set any specific package option
+     * @param $key string       The name of the cURL option
+     * @param $value string     The value to which the option is to be set
+     * @return $this
+     */
+    protected function withPackageOption($key, $value)
+    {
+        $this->packageOptions[ $key ] = $value;
+
+        return $this;
+    }
+
+    /**
+     *  Set the request timeout (default 30 seconds)
+     * @param $header string    The HTTP header that is to be added to the request
+     * @return $this
+     */
+    public function withHeader($header)
+    {
+        $this->curlOptions[ 'HTTP_HEADER' ][] = $header;
     }
 
     /**
@@ -76,7 +121,14 @@ class Builder {
      */
     public function get()
     {
-        return null;
+        $parameterString = '';
+        if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
+            $parameterString = '?'. http_build_query($this->packageOptions[ 'data' ]);
+        }
+
+        $this->curlOptions[ 'URL' ] .= $parameterString;
+
+        return $this->send();
     }
 
     /**
@@ -84,7 +136,21 @@ class Builder {
      */
     public function post()
     {
-        return null;
+        $this->setPostParameters();
+
+        return $this->send();
+    }
+
+    protected function setPostParameters()
+    {
+        $this->curlOptions[ 'POST' ] = true;
+
+        $parameters = $this->packageOptions[ 'data' ];
+        if( $this->packageOptions[ 'asJson' ] ) {
+            $parameters = json_encode($parameters);
+        }
+
+        $this->curlOptions[ 'POST_FIELDS' ] = $parameters;
     }
 
     /**
@@ -92,7 +158,9 @@ class Builder {
      */
     public function put()
     {
-        return null;
+        $this->setPostParameters();
+
+        return $this->send();
     }
 
     /**
@@ -100,7 +168,59 @@ class Builder {
      */
     public function delete()
     {
-        return null;
+        $this->setPostParameters();
+
+        return $this->send();
+    }
+
+
+
+
+    /**
+     *  Send the request
+     */
+    protected function send()
+    {
+        // Add JSON header if necessary
+        if( $this->packageOptions[ 'asJson' ] ) {
+            $this->withHeader( 'Content-Type: application/json' );
+        }
+
+
+        // Create the request with all specified options
+        $this->curlObject = curl_init();
+        $options = $this->forgeOptions();
+        curl_setopt_array( $this->curlObject, $options );
+
+
+        // Send the request
+        $response = curl_exec( $this->curlObject );
+        curl_close( $this->curlObject );
+
+
+        // Decode the request if necessary
+        if( $this->packageOptions[ 'asJson' ] ) {
+            $response = json_decode($response);
+        }
+
+        // Return the result
+        return $response;
+    }
+
+    protected function forgeOptions()
+    {
+        $results = array();
+        foreach( $this->curlOptions as $key => $value ) {
+            $array_key = constant( 'CURLOPT_' . str_replace('_', '', $key) );
+
+            if( $key == 'POST_FIELDS' && is_array( $value ) ) {
+                $results[ $array_key ] = http_build_query( $value, null, '&' );
+            } else {
+                $results[ $array_key ] = $value;
+            }
+        }
+
+        return $results;
     }
 
 }
