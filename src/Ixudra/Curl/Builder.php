@@ -18,7 +18,7 @@ class Builder {
     );
 
     protected $packageOptions = array(
-        'parameters'            => array(),
+        'data'                  => array(),
         'asJson'                => false,
     );
 
@@ -62,14 +62,14 @@ class Builder {
         return $this->withPackageOption( 'asJson', true );
     }
 
-    /**
-     *  Send the request over a secure connection
-     * @return $this
-     */
-    public function secure()
-    {
-        return $this;
-    }
+//    /**
+//     *  Send the request over a secure connection
+//     * @return $this
+//     */
+//    public function secure()
+//    {
+//        return $this;
+//    }
 
     /**
      *  Set any specific cURL option
@@ -145,6 +145,9 @@ class Builder {
         return $this->send();
     }
 
+    /**
+     * Add POST parameters to the curlOptions array
+     */
     protected function setPostParameters()
     {
         $this->curlOptions[ 'POST' ] = true;
@@ -157,27 +160,27 @@ class Builder {
         $this->curlOptions[ 'POST_FIELDS' ] = $parameters;
     }
 
-    /**
-     *  Send a PUT request to a URL using the specified cURL options
-     * @return mixed
-     */
-    public function put()
-    {
-        $this->setPostParameters();
-
-        return $this->send();
-    }
-
-    /**
-     *  Send a DELETE request to a URL using the specified cURL options
-     * @return mixed
-     */
-    public function delete()
-    {
-        $this->setPostParameters();
-
-        return $this->send();
-    }
+//    /**
+//     *  Send a PUT request to a URL using the specified cURL options
+//     * @return mixed
+//     */
+//    public function put()
+//    {
+//        $this->setPostParameters();
+//
+//        return $this->send();
+//    }
+//
+//    /**
+//     *  Send a DELETE request to a URL using the specified cURL options
+//     * @return mixed
+//     */
+//    public function delete()
+//    {
+//        $this->setPostParameters();
+//
+//        return $this->send();
+//    }
 
     /**
      *  Send the request

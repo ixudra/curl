@@ -1,9 +1,10 @@
 ixudra/curl
 ================
 
-Custom PHP curl library for the Laravel 5 framework - developed by [Ixudra](http://ixudra.be).
+Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra](http://ixudra.be).
 
 This package can be used by anyone at any given time, but keep in mind that it is optimized for my personal custom workflow. It may not suit your project perfectly and modifications may be in order.
+
 
 
 
@@ -15,13 +16,44 @@ Pull this package in through Composer.
 
     {
         "require": {
-            "ixudra/curl": "5.*"
+            "ixudra/curl": "6.*"
         }
     }
 
 ```
 
+### Laravel 5.* Integration
+
 Add the service provider to your `config/app.php` file:
+
+```php
+
+    'providers'     => array(
+
+        //...
+        Ixudra\Curl\CurlServiceProvider::class,
+
+    ),
+
+```
+
+Add the facade to your `config/app.php` file:
+
+```php
+
+    'facades'       => array(
+
+        //...
+        'Curl'          => Ixudra\Curl\Facades\Curl::class,
+
+    ),
+
+```
+
+
+### Laravel 4.* Integration
+
+Add the service provider to your `app/config/app.php` file:
 
 ```php
 
@@ -34,7 +66,7 @@ Add the service provider to your `config/app.php` file:
 
 ```
 
-Add the facade to your `config/app.php` file:
+Add the facade to your `app/config/app.php` file:
 
 ```php
 
@@ -48,64 +80,109 @@ Add the facade to your `config/app.php` file:
 ```
 
 
+### Integration without Laravel
+
+Create a new instance of the `CurlService` where you would like to use the package:
+
+```php
+
+    $curlService = new \Ixudra\Curl\CurlService();
+
+```
+
+
+
 
 ## Usage
 
-### GET requests
+### Laravel usage
 
-The package provides an easy interface for sending CURL requests from your application. Optionally, you can also 
-include several `GET` parameters that will automatically be added to the base URL by the package automatically. Lastly, 
-the package also has a parameter that allows you to easily mark a request as a JSON requests. The package will 
-automatically handle the conversion from and to JSON to PHP if needed. The default value of this parameter is `false`. 
-The last parameter can be used to pass additional CURL parameters to the request:
+The package provides an easy interface for sending cURL requests from your application. The package provides a fluent 
+interface similar the Laravel query builder to easily configure the request. There are several utility methods that allow
+you to easily add certain options to the request. If no utility method applies, you can also use the general `withOption`
+method.
+
+In order to send the request, you need to use the method which matches the HTTP method of the request you are trying to
+send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELETE` will be added in the near future.
 
 ```php
 
     // Send a GET request to: http://www.foo.com/bar
-    Curl::get('http://www.foo.com/bar');
+    Curl::to('http://www.foo.com/bar')
+        ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz
-    Curl::get('http://www.foo.com/bar', array('foz' => 'baz'));
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
-    Curl::get('http://www.foo.com/bar', array('foz' => 'baz'), true);
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON over SSL
-    Curl::get('http://www.foo.com/bar', array('foz' => 'baz'), true, array('SSL_VERIFYPEER' => false));
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->withOption('SSL_VERIFYPEER', false)
+        ->get();
+
+    // Send a POST request to: http://www.foo.com/bar
+    Curl::to('http://www.foo.com/bar')
+        ->post();
+
+    // Send a POST request to: http://www.foo.com/bar
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->post();
+
+    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->post();
+
+    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON over SSL
+    Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->withOption('SSL_VERIFYPEER', false)
+        ->post();
 
 ```
 
 The package will automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does 
-not perform any validation on the CURL options. Additional information about available CURL options can be found
+not perform any validation on the cURL options. Additional information about available cURL options can be found
 [here](http://php.net/manual/en/function.curl-setopt.php).
 
 
+### Usage without Laravel
 
-### POST requests
-
-The package also allows you to send `POST` requests for your application. The first and second parameter are 
-identical to the `Curl::get()` method. The `POST` parameters can be passed on as the third parameter. The fourth
-parameter can be used to mark the request as a JSON requests. The package will automatically handle the conversion 
-from and to JSON to PHP is needed. The default value of this parameter is `false`. The last parameter can be used to 
-pass additional CURL parameters to the request:
+Usage without Laravel is identical to usage described previously. The only difference is that you will not be able to 
+use the facades to access the `CurlService`.
 
 ```php
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'fow' = 'baw'
-    Curl::post('http://www.foo.com/bar', array(), array('fow' => 'baw'));
+    $curlService = new \Ixudra\Curl\CurlService();
 
-    // Send a POST request to: http://www.foo.com/bar?foz=baz with arguments 'fow' = 'baw'
-    Curl::post('http://www.foo.com/bar', array('foz' => 'baz'), array('fow' => 'baw'));
-
-    // Send a POST request to: http://www.foo.com/bar?foz=baz with arguments 'fow' = 'baw' using JSON
-    Curl::post('http://www.foo.com/bar', array('foz' => 'baz'), array('fow' => 'baw'), true);
-
-    // Send a POST request to: http://www.foo.com/bar?foz=baz with arguments 'fow' = 'baw' using JSON over SSL
-    Curl::post('http://www.foo.com/bar', array('foz' => 'baz'), array('fow' => 'baw'), true, array('SSL_VERIFYPEER' => false));
+    // Send a GET request to: http://www.foo.com/bar
+    $curlService->to('http://www.foo.com/bar')
+        ->get();
+        
+    // Send a POST request to: http://www.foo.com/bar
+    $curlService->to('http://www.foo.com/bar')
+        ->post();
 
 ```
 
-That's all there is to it! Have fun!
+
+
+
+## Planning
+
+ - Add `PUT` and `DELETE` method
+ - Add additional utility methods for other cURL options
+ - Add contract to allow different HTTP providers such as Guzzle
 
 
 
