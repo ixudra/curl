@@ -25,6 +25,7 @@ class Builder {
 
     /**
      *  Set the URL to which the request is to be sent
+     * @param $url string   The URL to which the request is to be sent
      * @return $this
      */
     public function to($url)
@@ -33,7 +34,8 @@ class Builder {
     }
 
     /**
-     *  Set the request timeout (default 30 seconds)
+     *  Set the request timeout
+     * @param $timeout integer  The timeout for the request (in seconds. Default: 30 seconds)
      * @return $this
      */
     public function withTimeout($timeout = 30)
@@ -107,7 +109,7 @@ class Builder {
     }
 
     /**
-     *  Set the request timeout (default 30 seconds)
+     *  Add a HTTP header to the request
      * @param $header string    The HTTP header that is to be added to the request
      * @return $this
      */
@@ -118,6 +120,7 @@ class Builder {
 
     /**
      *  Send a GET request to a URL using the specified cURL options
+     * @return mixed
      */
     public function get()
     {
@@ -133,6 +136,7 @@ class Builder {
 
     /**
      *  Send a POST request to a URL using the specified cURL options
+     * @return mixed
      */
     public function post()
     {
@@ -155,6 +159,7 @@ class Builder {
 
     /**
      *  Send a PUT request to a URL using the specified cURL options
+     * @return mixed
      */
     public function put()
     {
@@ -165,6 +170,7 @@ class Builder {
 
     /**
      *  Send a DELETE request to a URL using the specified cURL options
+     * @return mixed
      */
     public function delete()
     {
@@ -173,11 +179,9 @@ class Builder {
         return $this->send();
     }
 
-
-
-
     /**
      *  Send the request
+     * @return mixed
      */
     protected function send()
     {
@@ -186,17 +190,14 @@ class Builder {
             $this->withHeader( 'Content-Type: application/json' );
         }
 
-
         // Create the request with all specified options
         $this->curlObject = curl_init();
         $options = $this->forgeOptions();
         curl_setopt_array( $this->curlObject, $options );
 
-
         // Send the request
         $response = curl_exec( $this->curlObject );
         curl_close( $this->curlObject );
-
 
         // Decode the request if necessary
         if( $this->packageOptions[ 'asJson' ] ) {
@@ -207,6 +208,10 @@ class Builder {
         return $response;
     }
 
+    /**
+     *  Convert the curlOptions to an array of usable options for the cURL request
+     * @return array
+     */
     protected function forgeOptions()
     {
         $results = array();
