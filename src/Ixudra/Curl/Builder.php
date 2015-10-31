@@ -219,7 +219,7 @@ class Builder {
     {
         $results = array();
         foreach( $this->curlOptions as $key => $value ) {
-            $array_key = constant( 'CURLOPT_' . str_replace('_', '', $key) );
+            $array_key = constant( 'CURLOPT_' . $key );
 
             if( $key == 'POST_FIELDS' && is_array( $value ) ) {
                 $results[ $array_key ] = http_build_query( $value, null, '&' );
