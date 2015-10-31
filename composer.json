@@ -1,5 +1,5 @@
 {
-    "name": "ixudra/curl",
+    "name": "kevinvdburgt/curl-hotfix",
     "description": "Custom PHP Curl library for the Laravel 5 framework - developed by Ixudra",
     "version": "6.0.1",
     "keywords": ["Ixudra", "Laravel", "Curl"],
