@@ -6,15 +6,15 @@ class Builder {
     protected $curlObject = null;
 
     protected $curlOptions = array(
-        'RETURN_TRANSFER'       => true,
-        'FAIL_ON_ERROR'         => true,
-        'FOLLOW_LOCATION'       => false,
-        'CONNECT_TIMEOUT'       => '',
+        'RETURNTRANSFER'        => true,
+        'FAILONERROR'           => true,
+        'FOLLOWLOCATION'        => false,
+        'CONNECTTIMEOUT'        => '',
         'TIMEOUT'               => 30,
-        'USER_AGENT'            => '',
+        'USERAGENT'             => '',
         'URL'                   => '',
         'POST'                  => false,
-        'HTTP_HEADER'           => array(),
+        'HTTPHEADER'            => array(),
     );
 
     protected $packageOptions = array(
