@@ -6,15 +6,15 @@ class Builder {
     protected $curlObject = null;
 
     protected $curlOptions = array(
-        'RETURN_TRANSFER'       => true,
-        'FAIL_ON_ERROR'         => true,
-        'FOLLOW_LOCATION'       => false,
-        'CONNECT_TIMEOUT'       => '',
+        'RETURNTRANSFER'        => true,
+        'FAILONERROR'           => true,
+        'FOLLOWLOCATION'        => false,
+        'CONNECTTIMEOUT'        => '',
         'TIMEOUT'               => 30,
-        'USER_AGENT'            => '',
+        'USERAGENT'             => '',
         'URL'                   => '',
         'POST'                  => false,
-        'HTTP_HEADER'           => array(),
+        'HTTPHEADER'            => array(),
     );
 
     protected $packageOptions = array(
@@ -115,7 +115,7 @@ class Builder {
      */
     public function withHeader($header)
     {
-        $this->curlOptions[ 'HTTP_HEADER' ][] = $header;
+        $this->curlOptions[ 'HTTPHEADER' ][] = $header;
     }
 
     /**
@@ -157,7 +157,7 @@ class Builder {
             $parameters = json_encode($parameters);
         }
 
-        $this->curlOptions[ 'POST_FIELDS' ] = $parameters;
+        $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
     }
 
 //    /**
@@ -221,7 +221,7 @@ class Builder {
         foreach( $this->curlOptions as $key => $value ) {
             $array_key = constant( 'CURLOPT_' . $key );
 
-            if( $key == 'POST_FIELDS' && is_array( $value ) ) {
+            if( $key == 'POSTFIELDS' && is_array( $value ) ) {
                 $results[ $array_key ] = http_build_query( $value, null, '&' );
             } else {
                 $results[ $array_key ] = $value;
