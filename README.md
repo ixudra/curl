@@ -108,43 +108,43 @@ send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELE
 ```php
 
     // Send a GET request to: http://www.foo.com/bar
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->asJson()
         ->get();
 
     // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON over SSL
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->withOption('SSL_VERIFYPEER', false)
         ->get();
 
     // Send a POST request to: http://www.foo.com/bar
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->post();
 
     // Send a POST request to: http://www.foo.com/bar
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->post();
 
     // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->asJson()
         ->post();
 
     // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON over SSL
-    Curl::to('http://www.foo.com/bar')
+    $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
         ->withOption('SSL_VERIFYPEER', false)
         ->post();
@@ -166,11 +166,11 @@ use the facades to access the `CurlService`.
     $curlService = new \Ixudra\Curl\CurlService();
 
     // Send a GET request to: http://www.foo.com/bar
-    $curlService->to('http://www.foo.com/bar')
+    $response = $curlService->to('http://www.foo.com/bar')
         ->get();
         
     // Send a POST request to: http://www.foo.com/bar
-    $curlService->to('http://www.foo.com/bar')
+    $response = $curlService->to('http://www.foo.com/bar')
         ->post();
 
 ```
