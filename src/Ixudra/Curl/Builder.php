@@ -116,6 +116,8 @@ class Builder {
     public function withHeader($header)
     {
         $this->curlOptions[ 'HTTPHEADER' ][] = $header;
+
+        return $this;
     }
 
     /**
