@@ -20,6 +20,7 @@ class Builder {
     protected $packageOptions = array(
         'data'                  => array(),
         'asJson'                => false,
+        'returnAsArray'         => false,
     );
 
 
@@ -45,7 +46,7 @@ class Builder {
 
     /**
      *  Add GET or POST data to the request
-     * @param $data array   Array of data that is to be sent along wiht the request
+     * @param $data array   Array of data that is to be sent along with the request
      * @return $this
      */
     public function withData($data = array())
@@ -55,11 +56,13 @@ class Builder {
 
     /**
      *  Configure the package to encode and decode the request data
+     * @param $asArray boolean   Indicates whether or not the data should be returned as an array. Default: false
      * @return $this
      */
-    public function asJson()
+    public function asJson($asArray = false)
     {
-        return $this->withPackageOption( 'asJson', true );
+        return $this->withPackageOption( 'asJson', true )
+            ->withPackageOption( 'returnAsArray', $asArray );
     }
 
 //    /**
@@ -206,7 +209,7 @@ class Builder {
 
         // Decode the request if necessary
         if( $this->packageOptions[ 'asJson' ] ) {
-            $response = json_decode($response);
+            $response = json_decode( $response, $this->packageOptions[ 'returnAsArray' ] );
         }
 
         // Return the result

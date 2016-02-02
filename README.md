@@ -143,6 +143,12 @@ send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELE
         ->asJson()
         ->post();
 
+    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson( true )
+        ->post();
+
     // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON over SSL
     $response = Curl::to('http://www.foo.com/bar')
         ->withData( array( 'foz' => 'baz' ) )
