@@ -3,8 +3,10 @@
 
 class Builder {
 
+    /** @var resource $curlObject       cURL request */
     protected $curlObject = null;
 
+    /** @var array $curlOptions         Array of cURL options */
     protected $curlOptions = array(
         'RETURNTRANSFER'        => true,
         'FAILONERROR'           => true,
@@ -17,17 +19,20 @@ class Builder {
         'HTTPHEADER'            => array(),
     );
 
+    /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
         'data'                  => array(),
         'asJson'                => false,
         'returnAsArray'         => false,
+        'saveFile'              => '',
     );
 
 
     /**
-     *  Set the URL to which the request is to be sent
+     * Set the URL to which the request is to be sent
+     *
      * @param $url string   The URL to which the request is to be sent
-     * @return $this
+     * @return Builder
      */
     public function to($url)
     {
@@ -35,9 +40,10 @@ class Builder {
     }
 
     /**
-     *  Set the request timeout
-     * @param $timeout integer  The timeout for the request (in seconds. Default: 30 seconds)
-     * @return $this
+     * Set the request timeout
+     *
+     * @param   integer $timeout    The timeout for the request (in seconds. Default: 30 seconds)
+     * @return Builder
      */
     public function withTimeout($timeout = 30)
     {
@@ -45,9 +51,10 @@ class Builder {
     }
 
     /**
-     *  Add GET or POST data to the request
-     * @param $data array   Array of data that is to be sent along with the request
-     * @return $this
+     * Add GET or POST data to the request
+     *
+     * @param   array $data     Array of data that is to be sent along with the request
+     * @return Builder
      */
     public function withData($data = array())
     {
@@ -55,9 +62,10 @@ class Builder {
     }
 
     /**
-     *  Configure the package to encode and decode the request data
-     * @param $asArray boolean   Indicates whether or not the data should be returned as an array. Default: false
-     * @return $this
+     * Configure the package to encode and decode the request data
+     *
+     * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
+     * @return Builder
      */
     public function asJson($asArray = false)
     {
@@ -66,8 +74,9 @@ class Builder {
     }
 
 //    /**
-//     *  Send the request over a secure connection
-//     * @return $this
+//     * Send the request over a secure connection
+//     *
+//     * @return Builder
 //     */
 //    public function secure()
 //    {
@@ -75,10 +84,11 @@ class Builder {
 //    }
 
     /**
-     *  Set any specific cURL option
-     * @param $key string       The name of the cURL option
-     * @param $value string     The value to which the option is to be set
-     * @return $this
+     * Set any specific cURL option
+     *
+     * @param   string $key         The name of the cURL option
+     * @param   string $value       The value to which the option is to be set
+     * @return Builder
      */
     public function withOption($key, $value)
     {
@@ -86,10 +96,11 @@ class Builder {
     }
 
     /**
-     *  Set any specific cURL option
-     * @param $key string       The name of the cURL option
-     * @param $value string     The value to which the option is to be set
-     * @return $this
+     * Set any specific cURL option
+     *
+     * @param   string $key         The name of the cURL option
+     * @param   string $value       The value to which the option is to be set
+     * @return Builder
      */
     protected function withCurlOption($key, $value)
     {
@@ -99,10 +110,11 @@ class Builder {
     }
 
     /**
-     *  Set any specific package option
-     * @param $key string       The name of the cURL option
-     * @param $value string     The value to which the option is to be set
-     * @return $this
+     * Set any specific package option
+     *
+     * @param   string $key       The name of the cURL option
+     * @param   string $value     The value to which the option is to be set
+     * @return Builder
      */
     protected function withPackageOption($key, $value)
     {
@@ -112,9 +124,10 @@ class Builder {
     }
 
     /**
-     *  Add a HTTP header to the request
-     * @param $header string    The HTTP header that is to be added to the request
-     * @return $this
+     * Add a HTTP header to the request
+     *
+     * @param   string $header      The HTTP header that is to be added to the request
+     * @return Builder
      */
     public function withHeader($header)
     {
@@ -124,7 +137,20 @@ class Builder {
     }
 
     /**
-     *  Send a GET request to a URL using the specified cURL options
+     * Add a content type HTTP header to the request
+     *
+     * @param   string $contentType    The content type of the file you would like to download
+     * @return Builder
+     */
+    public function withContentType($contentType)
+    {
+        return $this->withHeader( 'Content-Type: '. $contentType )
+            ->withHeader( 'Connection: Keep-Alive' );
+    }
+
+    /**
+     * Send a GET request to a URL using the specified cURL options
+     *
      * @return mixed
      */
     public function get()
@@ -140,7 +166,8 @@ class Builder {
     }
 
     /**
-     *  Send a POST request to a URL using the specified cURL options
+     * Send a POST request to a URL using the specified cURL options
+     *
      * @return mixed
      */
     public function post()
@@ -149,6 +176,19 @@ class Builder {
 
         return $this->send();
     }
+
+     /**
+      * Send a download request to a URL using the specified cURL options
+      *
+      * @param  string $fileName
+      * @return mixed
+      */
+     public function download($fileName)
+     {
+         $this->packageOptions[ 'saveFile' ] = $fileName;
+
+         return $this->send();
+     }
 
     /**
      * Add POST parameters to the curlOptions array
@@ -166,7 +206,8 @@ class Builder {
     }
 
 //    /**
-//     *  Send a PUT request to a URL using the specified cURL options
+//     * Send a PUT request to a URL using the specified cURL options
+//     *
 //     * @return mixed
 //     */
 //    public function put()
@@ -177,7 +218,8 @@ class Builder {
 //    }
 //
 //    /**
-//     *  Send a DELETE request to a URL using the specified cURL options
+//     * Send a DELETE request to a URL using the specified cURL options
+//     *
 //     * @return mixed
 //     */
 //    public function delete()
@@ -188,7 +230,8 @@ class Builder {
 //    }
 
     /**
-     *  Send the request
+     * Send the request
+     *
      * @return mixed
      */
     protected function send()
@@ -212,12 +255,23 @@ class Builder {
             $response = json_decode( $response, $this->packageOptions[ 'returnAsArray' ] );
         }
 
+        if( $this->packageOptions[ 'saveFile' ] ) {
+            // Save to file if a filename was specified
+            $file = fopen($this->packageOptions[ 'saveFile' ], 'w');
+            fwrite($file, $response);
+            fclose($file);
+        } else if( $this->packageOptions[ 'asJson' ] ) {
+            // Decode the request if necessary
+            $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
+        }
+
         // Return the result
         return $response;
     }
 
     /**
-     *  Convert the curlOptions to an array of usable options for the cURL request
+     * Convert the curlOptions to an array of usable options for the cURL request
+     *
      * @return array
      */
     protected function forgeOptions()

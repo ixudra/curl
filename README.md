@@ -102,8 +102,9 @@ interface similar the Laravel query builder to easily configure the request. The
 you to easily add certain options to the request. If no utility method applies, you can also use the general `withOption`
 method.
 
-In order to send the request, you need to use the method which matches the HTTP method of the request you are trying to
-send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELETE` will be added in the near future.
+### Sending GET requests
+
+In order to send a `GET` request, you need to use the `get()` method that is provided by the package:
 
 ```php
 
@@ -122,11 +123,14 @@ send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELE
         ->asJson()
         ->get();
 
-    // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON over SSL
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->withOption('SSL_VERIFYPEER', false)
-        ->get();
+```
+
+
+### Sending POST requests
+
+Post requests work similar to `GET` requests, but use the `post()` method instead:
+
+```php
 
     // Send a POST request to: http://www.foo.com/bar
     $response = Curl::to('http://www.foo.com/bar')
@@ -149,17 +153,33 @@ send. Currently, only the `GET` and `POST` method are supported. `PUT` and `DELE
         ->asJson( true )
         ->post();
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON over SSL
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->withOption('SSL_VERIFYPEER', false)
-        ->post();
+```
+
+`PUT` and `DELETE` will be added in the near future.
+
+
+### Downloading files
+
+For downloading a file, you can use the `download()` method:
+
+```php
+
+    // Download an image from: file http://www.foo.com/bar.png
+    $response = Curl::to('http://foo.com/bar.png')
+        ->withContentType('image/png')
+        ->download('/path/to/dir/image.png');
 
 ```
 
-The package will automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does 
-not perform any validation on the cURL options. Additional information about available cURL options can be found
+
+### Using cURL options
+
+You can add various cURL options to the request using of several utility methods such as `withHeader()` for adding a 
+header to the request, or use the general `withOption()` method if no utility method applies. The package will 
+automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does not perform 
+any validation on the cURL options. Additional information about available cURL options can be found
 [here](http://php.net/manual/en/function.curl-setopt.php).
+
 
 
 ### Usage without Laravel
