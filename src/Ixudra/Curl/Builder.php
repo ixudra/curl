@@ -250,11 +250,6 @@ class Builder {
         $response = curl_exec( $this->curlObject );
         curl_close( $this->curlObject );
 
-        // Decode the request if necessary
-        if( $this->packageOptions[ 'asJson' ] ) {
-            $response = json_decode( $response, $this->packageOptions[ 'returnAsArray' ] );
-        }
-
         if( $this->packageOptions[ 'saveFile' ] ) {
             // Save to file if a filename was specified
             $file = fopen($this->packageOptions[ 'saveFile' ], 'w');
