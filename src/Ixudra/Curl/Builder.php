@@ -24,6 +24,8 @@ class Builder {
         'data'                  => array(),
         'asJson'                => false,
         'returnAsArray'         => false,
+        'enableDebug'           => false,
+        'debugFile'             => '',
         'saveFile'              => '',
     );
 
@@ -149,6 +151,19 @@ class Builder {
     }
 
     /**
+     * Enable debug mode for the cURL request
+     *
+     * @param   string $logFile    The full path to the log file you want to use
+     * @return Builder
+     */
+    public function enableDebug($logFile)
+    {
+        return $this->withPackageOption( 'enableDebug', true )
+            ->withPackageOption( 'debugFile', $logFile )
+            ->withOption('VERBOSE', true);
+    }
+
+    /**
      * Send a GET request to a URL using the specified cURL options
      *
      * @return mixed
@@ -205,29 +220,29 @@ class Builder {
         $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
     }
 
-//    /**
-//     * Send a PUT request to a URL using the specified cURL options
-//     *
-//     * @return mixed
-//     */
-//    public function put()
-//    {
-//        $this->setPostParameters();
-//
-//        return $this->send();
-//    }
-//
-//    /**
-//     * Send a DELETE request to a URL using the specified cURL options
-//     *
-//     * @return mixed
-//     */
-//    public function delete()
-//    {
-//        $this->setPostParameters();
-//
-//        return $this->send();
-//    }
+    /**
+     * Send a PUT request to a URL using the specified cURL options
+     *
+     * @return mixed
+     */
+    public function put()
+    {
+        $this->setPostParameters();
+
+        return $this->withOption('CUSTOMREQUEST', 'PUT')
+            ->send();
+    }
+
+    /**
+     * Send a DELETE request to a URL using the specified cURL options
+     *
+     * @return mixed
+     */
+    public function delete()
+    {
+        return $this->withOption('CUSTOMREQUEST', 'DELETE')
+            ->send();
+    }
 
     /**
      * Send the request
@@ -239,6 +254,11 @@ class Builder {
         // Add JSON header if necessary
         if( $this->packageOptions[ 'asJson' ] ) {
             $this->withHeader( 'Content-Type: application/json' );
+        }
+
+        if( $this->packageOptions[ 'enableDebug' ] ) {
+            $debugFile = fopen( $this->packageOptions[ 'debugFile' ], 'w');
+            $this->withOption('STDERR', $debugFile);
         }
 
         // Create the request with all specified options
@@ -258,6 +278,10 @@ class Builder {
         } else if( $this->packageOptions[ 'asJson' ] ) {
             // Decode the request if necessary
             $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
+        }
+
+        if( $this->packageOptions[ 'enableDebug' ] ) {
+            fclose( $debugFile );
         }
 
         // Return the result

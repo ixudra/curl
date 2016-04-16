@@ -155,7 +155,34 @@ Post requests work similar to `GET` requests, but use the `post()` method instea
 
 ```
 
-`PUT` and `DELETE` will be added in the near future.
+
+### Sending PUT requests
+
+Put requests work similar to `POST` requests, but use the `put()` method instead:
+
+```php
+
+    // Send a PUT request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->put();
+
+```
+
+
+### Sending DELETE requests
+
+Delete requests work similar to `GET` requests, but use the `delete()` method instead:
+
+```php
+
+    // Send a DELETE request to: http://www.foo.com/bar/1 using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+        ->asJson()
+        ->delete();
+
+```
 
 
 ### Downloading files
@@ -168,6 +195,21 @@ For downloading a file, you can use the `download()` method:
     $response = Curl::to('http://foo.com/bar.png')
         ->withContentType('image/png')
         ->download('/path/to/dir/image.png');
+
+```
+
+
+### Debugging requests
+
+In case a request fails, it might be useful to get debug the request. In this case, you can use the `debug()` method. 
+This method uses one parameter, which is the name of the file in which the debug information is to be stored:
+
+```php
+
+    // Send a GET request to http://www.foo.com/bar and log debug information in /path/to/dir/logFile.txt
+    $response = Curl::to('http://www.foo.com/bar')
+            ->enableDebug('/path/to/dir/logFile.txt');
+            ->get();
 
 ```
 
@@ -194,10 +236,18 @@ use the facades to access the `CurlService`.
     // Send a GET request to: http://www.foo.com/bar
     $response = $curlService->to('http://www.foo.com/bar')
         ->get();
-        
+
     // Send a POST request to: http://www.foo.com/bar
     $response = $curlService->to('http://www.foo.com/bar')
         ->post();
+
+    // Send a PUT request to: http://www.foo.com/bar
+    $response = $curlService->to('http://www.foo.com/bar')
+        ->put();
+
+    // Send a DELETE request to: http://www.foo.com/bar
+    $response = $curlService->to('http://www.foo.com/bar')
+        ->delete();
 
 ```
 
@@ -206,7 +256,6 @@ use the facades to access the `CurlService`.
 
 ## Planning
 
- - Add `PUT` and `DELETE` method
  - Add additional utility methods for other cURL options
  - Add contract to allow different HTTP providers such as Guzzle
 
