@@ -1,6 +1,8 @@
 <?php namespace Ixudra\Curl;
 
 
+use stdClass;
+
 class Builder {
 
     /** @var resource $curlObject       cURL request */
@@ -25,6 +27,7 @@ class Builder {
         'asJsonRequest'         => false,
         'asJsonResponse'        => false,
         'returnAsArray'         => false,
+        'responseObject'        => false,
         'enableDebug'           => false,
         'debugFile'             => '',
         'saveFile'              => '',
@@ -184,6 +187,16 @@ class Builder {
     }
 
     /**
+     * Return a full response object with HTTP status and headers instead of only the content
+     *
+     * @return Builder
+     */
+    public function returnResponseObject()
+    {
+        return $this->withPackageOption( 'responseObject', true );
+    }
+
+    /**
      * Enable debug mode for the cURL request
      *
      * @param   string $logFile    The full path to the log file you want to use
@@ -301,6 +314,13 @@ class Builder {
 
         // Send the request
         $response = curl_exec( $this->curlObject );
+
+        // Capture additional request information if needed
+        $responseData = array();
+        if( $this->packageOptions[ 'responseObject' ] ) {
+            $responseData = curl_getinfo( $this->curlObject );
+        }
+
         curl_close( $this->curlObject );
 
         if( $this->packageOptions[ 'saveFile' ] ) {
@@ -318,7 +338,25 @@ class Builder {
         }
 
         // Return the result
-        return $response;
+        return $this->returnResponse( $response, $responseData );
+    }
+
+    /**
+     * @param   mixed $content          Content of the request
+     * @param   array $responseData     Additional response information
+     * @return stdClass
+     */
+    protected function returnResponse($content, $responseData = array())
+    {
+        if( !$this->packageOptions[ 'responseObject' ] ) {
+            return $content;
+        }
+
+        $object = new stdClass();
+        $object->content = $content;
+        $object->status = $responseData[ 'http_code' ];
+
+        return $object;
     }
 
     /**
