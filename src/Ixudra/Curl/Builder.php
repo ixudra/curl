@@ -22,7 +22,8 @@ class Builder {
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
         'data'                  => array(),
-        'asJson'                => false,
+        'asJsonRequest'         => false,
+        'asJsonResponse'        => false,
         'returnAsArray'         => false,
         'enableDebug'           => false,
         'debugFile'             => '',
@@ -81,7 +82,29 @@ class Builder {
      */
     public function asJson($asArray = false)
     {
-        return $this->withPackageOption( 'asJson', true )
+        return $this->asJsonRequest()
+            ->asJsonResponse( $asArray );
+    }
+
+    /**
+     * Configure the package to encode the request data to json before sending it to the server
+     *
+     * @return Builder
+     */
+    public function asJsonRequest()
+    {
+        return $this->withPackageOption( 'asJsonRequest', true );
+    }
+
+    /**
+     * Configure the package to decode the request data from json to object or associative array
+     *
+     * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
+     * @return Builder
+     */
+    public function asJsonResponse($asArray = false)
+    {
+        return $this->withPackageOption( 'asJsonResponse', true )
             ->withPackageOption( 'returnAsArray', $asArray );
     }
 
@@ -223,7 +246,7 @@ class Builder {
         $this->curlOptions[ 'POST' ] = true;
 
         $parameters = $this->packageOptions[ 'data' ];
-        if( $this->packageOptions[ 'asJson' ] ) {
+        if( $this->packageOptions[ 'asJsonRequest' ] ) {
             $parameters = json_encode($parameters);
         }
 
@@ -262,7 +285,7 @@ class Builder {
     protected function send()
     {
         // Add JSON header if necessary
-        if( $this->packageOptions[ 'asJson' ] ) {
+        if( $this->packageOptions[ 'asJsonRequest' ] ) {
             $this->withHeader( 'Content-Type: application/json' );
         }
 
@@ -285,7 +308,7 @@ class Builder {
             $file = fopen($this->packageOptions[ 'saveFile' ], 'w');
             fwrite($file, $response);
             fclose($file);
-        } else if( $this->packageOptions[ 'asJson' ] ) {
+        } else if( $this->packageOptions[ 'asJsonResponse' ] ) {
             // Decode the request if necessary
             $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
         }
