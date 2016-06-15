@@ -64,6 +64,16 @@ class Builder {
     }
 
     /**
+     * Allow for redirects in the request
+     *
+     * @return Builder
+     */
+    public function allowRedirect()
+    {
+        return $this->withCurlOption( 'FOLLOWLOCATION', true );
+    }
+
+    /**
      * Configure the package to encode and decode the request data
      *
      * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
