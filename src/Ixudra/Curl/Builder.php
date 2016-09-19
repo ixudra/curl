@@ -29,6 +29,7 @@ class Builder {
         'returnAsArray'         => false,
         'responseObject'        => false,
         'enableDebug'           => false,
+        'containsFile'          => false,
         'debugFile'             => '',
         'saveFile'              => '',
     );
@@ -210,6 +211,16 @@ class Builder {
     }
 
     /**
+     * Enable File sending
+     *
+     * @return Builder
+     */
+    public function containsFile()
+    {
+        return $this->withPackageOption( 'containsFile', true );
+    }
+
+    /**
      * Send a GET request to a URL using the specified cURL options
      *
      * @return mixed
@@ -309,7 +320,11 @@ class Builder {
 
         // Create the request with all specified options
         $this->curlObject = curl_init();
-        $options = $this->forgeOptions();
+        if($this->packageOptions[ 'containsFile' ]) {
+            $options = $this->forgeFileOptions();
+        }else {
+            $options = $this->forgeOptions();
+        }
         curl_setopt_array( $this->curlObject, $options );
 
         // Send the request
@@ -377,6 +392,19 @@ class Builder {
             }
         }
 
+        return $results;
+    }
+    /**
+     * Convert the curlOptions with out the 'http_build_query' allowing for posting files.
+     * TODO:: make orignial funtion an overloaded function
+     * @return array
+     */
+    public function forgeFileOptions() {
+        $results = array();
+        foreach( $this->curlOptions as $key => $value ) {
+            $array_key = constant( 'CURLOPT_' . $key );
+            $results[ $array_key ] = $value;
+        }
         return $results;
     }
 
