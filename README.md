@@ -171,6 +171,21 @@ Put requests work similar to `POST` requests, but use the `put()` method instead
 ```
 
 
+### Sending PATCH requests
+
+Patch requests work similar to `POST` requests, but use the `patch()` method instead:
+
+```php
+
+    // Send a PATCH request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->patch();
+
+```
+
+
 ### Sending DELETE requests
 
 Delete requests work similar to `GET` requests, but use the `delete()` method instead:
@@ -183,19 +198,22 @@ Delete requests work similar to `GET` requests, but use the `delete()` method in
         ->delete();
 
 ```
-### Sending Files via Curl
 
-For Posting a file, you can use the `containsFile` method to correctly format a request before sending:
+
+### Sending files via Curl
+
+For sending files via a POST request, you can use the `containsFile` method to correctly format a request before sending:
 
 ```php
 
     $response = Curl::to('http://foo.com/bar.png')
         ->withContentType('multipart/form-data')
         ->withData( array( 'foz' => 'baz' ) )
-        ->containsFile( true )
+        ->containsFile()
         ->post();
 
 ```
+
 
 ### Downloading files
 

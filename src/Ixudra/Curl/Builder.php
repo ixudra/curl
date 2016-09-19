@@ -291,6 +291,19 @@ class Builder {
     }
 
     /**
+     * Send a PATCH request to a URL using the specified cURL options
+     *
+     * @return mixed
+     */
+    public function patch()
+    {
+        $this->setPostParameters();
+
+        return $this->withOption('CUSTOMREQUEST', 'PATCH')
+            ->send();
+    }
+
+    /**
      * Send a DELETE request to a URL using the specified cURL options
      *
      * @return mixed
@@ -320,11 +333,7 @@ class Builder {
 
         // Create the request with all specified options
         $this->curlObject = curl_init();
-        if($this->packageOptions[ 'containsFile' ]) {
-            $options = $this->forgeFileOptions();
-        }else {
-            $options = $this->forgeOptions();
-        }
+        $options = $this->forgeOptions();
         curl_setopt_array( $this->curlObject, $options );
 
         // Send the request
@@ -383,28 +392,15 @@ class Builder {
     {
         $results = array();
         foreach( $this->curlOptions as $key => $value ) {
-            $array_key = constant( 'CURLOPT_' . $key );
+            $arrayKey = constant( 'CURLOPT_' . $key );
 
-            if( $key == 'POSTFIELDS' && is_array( $value ) ) {
-                $results[ $array_key ] = http_build_query( $value, null, '&' );
+            if( !$this->packageOptions[ 'containsFile' ] && $key == 'POSTFIELDS' && is_array( $value ) ) {
+                $results[ $arrayKey ] = http_build_query( $value, null, '&' );
             } else {
-                $results[ $array_key ] = $value;
+                $results[ $arrayKey ] = $value;
             }
         }
 
-        return $results;
-    }
-    /**
-     * Convert the curlOptions with out the 'http_build_query' allowing for posting files.
-     * TODO:: make orignial funtion an overloaded function
-     * @return array
-     */
-    public function forgeFileOptions() {
-        $results = array();
-        foreach( $this->curlOptions as $key => $value ) {
-            $array_key = constant( 'CURLOPT_' . $key );
-            $results[ $array_key ] = $value;
-        }
         return $results;
     }
 
