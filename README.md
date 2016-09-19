@@ -97,7 +97,7 @@ Create a new instance of the `CurlService` where you would like to use the packa
 
 ### Laravel usage
 
-The package provides an easy interface for sending cURL requests from your application. The package provides a fluent 
+The package provides an easy interface for sending cURL requests from your application. The package provides a fluent
 interface similar the Laravel query builder to easily configure the request. There are several utility methods that allow
 you to easily add certain options to the request. If no utility method applies, you can also use the general `withOption`
 method.
@@ -183,7 +183,19 @@ Delete requests work similar to `GET` requests, but use the `delete()` method in
         ->delete();
 
 ```
+### Sending Files via Curl
 
+For Posting a file, you can use the `containsFile` method to correctly format a request before sending:
+
+```php
+
+    $response = Curl::to('http://foo.com/bar.png')
+        ->withContentType('multipart/form-data')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->containsFile( true )
+        ->post();
+
+```
 
 ### Downloading files
 
@@ -201,7 +213,7 @@ For downloading a file, you can use the `download()` method:
 
 ### Debugging requests
 
-In case a request fails, it might be useful to get debug the request. In this case, you can use the `debug()` method. 
+In case a request fails, it might be useful to get debug the request. In this case, you can use the `debug()` method.
 This method uses one parameter, which is the name of the file in which the debug information is to be stored:
 
 ```php
@@ -216,9 +228,9 @@ This method uses one parameter, which is the name of the file in which the debug
 
 ### Using cURL options
 
-You can add various cURL options to the request using of several utility methods such as `withHeader()` for adding a 
-header to the request, or use the general `withOption()` method if no utility method applies. The package will 
-automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does not perform 
+You can add various cURL options to the request using of several utility methods such as `withHeader()` for adding a
+header to the request, or use the general `withOption()` method if no utility method applies. The package will
+automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does not perform
 any validation on the cURL options. Additional information about available cURL options can be found
 [here](http://php.net/manual/en/function.curl-setopt.php).
 
@@ -226,7 +238,7 @@ any validation on the cURL options. Additional information about available cURL 
 
 ### Usage without Laravel
 
-Usage without Laravel is identical to usage described previously. The only difference is that you will not be able to 
+Usage without Laravel is identical to usage described previously. The only difference is that you will not be able to
 use the facades to access the `CurlService`.
 
 ```php
