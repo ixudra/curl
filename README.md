@@ -80,6 +80,41 @@ Add the facade to your `app/config/app.php` file:
 
 ```
 
+
+### Lumen 5.* integration
+
+In your `bootstrap/app.php`, make sure you've un-commented the following line (around line 26):
+
+```
+$app->withFacades();
+```
+
+Then, register your class alias:
+```
+class_alias('Ixudra\Curl\Facades\Curl, 'Curl');
+```
+
+Finally, you have to register your ServiceProvider around line 70-80:
+
+```
+/*
+|--------------------------------------------------------------------------
+| Register Service Providers
+|--------------------------------------------------------------------------
+|
+| Here we will register all of the application's service providers which
+| are used to bind services into the container. Service providers are
+| totally optional, so you are not required to uncomment this line.
+|
+*/
+
+// $app->register('App\Providers\AppServiceProvider');
+
+// Package service providers
+$app->register('Ixudra\Curl\Providers\CurlServiceProvider');
+```
+
+
 ### Integration without Laravel
 
 Create a new instance of the `CurlService` where you would like to use the package:
