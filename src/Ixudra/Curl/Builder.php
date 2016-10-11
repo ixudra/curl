@@ -227,12 +227,7 @@ class Builder {
      */
     public function get()
     {
-        $parameterString = '';
-        if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
-            $parameterString = '?'. http_build_query($this->packageOptions[ 'data' ]);
-        }
-
-        $this->curlOptions[ 'URL' ] .= $parameterString;
+        $this->appendDataToURL();
 
         return $this->send();
     }
@@ -310,6 +305,8 @@ class Builder {
      */
     public function delete()
     {
+        $this->appendDataToURL();
+
         return $this->withOption('CUSTOMREQUEST', 'DELETE')
             ->send();
     }
@@ -404,4 +401,18 @@ class Builder {
         return $results;
     }
 
+    /**
+     * Append set data to the query string for GET and DELETE cURL requests
+     *
+     * @return string
+     */
+    protected function appendDataToURL()
+    {
+        $parameterString = '';
+        if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
+            $parameterString = '?'. http_build_query($this->packageOptions[ 'data' ]);
+        }
+
+        return $this->curlOptions[ 'URL' ] .= $parameterString;
+    }
 }
