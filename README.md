@@ -91,10 +91,10 @@ $app->withFacades();
 
 Then, register your class alias:
 ```
-class_alias('Ixudra\Curl\Facades\Curl, 'Curl');
+class_alias('Ixudra\Curl\Facades\Curl', 'Curl');
 ```
 
-Finally, you have to register your ServiceProvider around line 70-80:
+Finally, you have to register your ServiceProvider (around line 70-80):
 
 ```
 /*
