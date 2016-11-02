@@ -340,10 +340,12 @@ class Builder {
         $responseData = array();
         if( $this->packageOptions[ 'responseObject' ] ) {
             $responseData = curl_getinfo( $this->curlObject );
-            if(curl_errno($this->curlObject)){
-                $responseData['errorMessage'] = curl_error($this->curlObject);
+
+            if( curl_errno($this->curlObject) ) {
+                $responseData[ 'errorMessage' ] = curl_error($this->curlObject);
             }
         }
+
         curl_close( $this->curlObject );
 
         if( $this->packageOptions[ 'saveFile' ] ) {
@@ -378,7 +380,9 @@ class Builder {
         $object = new stdClass();
         $object->content = $content;
         $object->status = $responseData[ 'http_code' ];
-        $object->error = $responseData['errorMessage'];
+        if( array_key_exists('errorMessage', $responseData) ) {
+            $object->error = $responseData[ 'errorMessage' ];
+        }
 
         return $object;
     }
@@ -418,4 +422,5 @@ class Builder {
 
         return $this->curlOptions[ 'URL' ] .= $parameterString;
     }
+
 }
