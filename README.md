@@ -266,7 +266,7 @@ For downloading a file, you can use the `download()` method:
 
 ### Debugging requests
 
-In case a request fails, it might be useful to get debug the request. In this case, you can use the `debug()` method.
+In case a request fails, it might be useful to get debug the request. In this case, you can use the `enableDebug()` method.
 This method uses one parameter, which is the name of the file in which the debug information is to be stored:
 
 ```php
