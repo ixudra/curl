@@ -3,8 +3,6 @@ ixudra/curl
 
 Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra](http://ixudra.be).
 
-This package can be used by anyone at any given time, but keep in mind that it is optimized for my personal custom workflow. It may not suit your project perfectly and modifications may be in order.
-
 
 
 
@@ -279,6 +277,35 @@ This method uses one parameter, which is the name of the file in which the debug
 ```
 
 
+### Using response objects
+
+Be default, the package will only return the content of the request. In some cases, it might also be useful to know
+additional request information, such as the HTTP status code and error messages should they occur. In this case, you
+can use the `returnResponseObject()` method, which will return an stdClass that contains additional information as 
+well as the response content:
+
+```php
+
+    // Send a GET request to http://www.foo.com/bar and return a response object with additional information
+    $response = Curl::to('http://www.foo.com/bar')
+            ->returnResponseObject();
+            ->get();
+            
+    $content = $response->content;
+
+```
+
+The response object will look like this:
+
+```
+{
+   "content": 'Message content here',
+   "status": 200,
+   "error": 'Error message goes here'       // Only added if an error occurs
+}
+```
+
+
 ### Using cURL options
 
 You can add various cURL options to the request using of several utility methods such as `withHeader()` for adding a
@@ -286,6 +313,24 @@ header to the request, or use the general `withOption()` method if no utility me
 automatically prepend the options with the `CURLOPT_` prefix. It is worth noting that the package does not perform
 any validation on the cURL options. Additional information about available cURL options can be found
 [here](http://php.net/manual/en/function.curl-setopt.php).
+
+| Method                |  Default value    | Description                                                       |
+|-----------------------|-------------------|-------------------------------------------------------------------|
+| withTimeout()         |  30 seconds       | Set the timeout of the request                                    |
+| allowRedirect()       |  false            | Allow the request to be redirected internally                     |
+| asJsonRequest()       |  false            | Submit the request data as JSON                                   |
+| asJsonResponse()      |  false            | Decode the response data from JSON                                |
+| asJson()              |  false            | Utility method to set both `asJsonRequest()` and `asJsonResponse()` at the same time   |
+| withHeader()          |  array()          | Add an HTTP header to the request                                 |
+| withHeaders()         |  array()          | Add multiple HTTP headers to the request                          |
+| withContentType()     |  none             | Set the content type of the response                              |
+| containsFile()        |  false            | Should be used to submit files through forms                      |
+| withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
+| withOption()          |  none             | Generic method to add any cURL option to the request              |
+
+For specific information regarding parameters and return times, I encourage you to take a look at 
+`ixudra\curl\src\Ixudra\Curl\Builder.php` which has extensive doc blocks that contain all the necessary information
+for each specific method.
 
 
 

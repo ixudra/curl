@@ -176,6 +176,21 @@ class Builder {
     }
 
     /**
+     * Add multiple HTTP header at the same time to the request
+     *
+     * @param   array $headers      Array of HTTP headers that must be added to the request
+     * @return Builder
+     */
+    public function withHeaders(array $headers)
+    {
+        $this->curlOptions[ 'HTTPHEADER' ] = array_merge(
+            $this->curlOptions[ 'HTTPHEADER' ], $headers
+        );
+
+        return $this;
+    }
+
+    /**
      * Add a content type HTTP header to the request
      *
      * @param   string $contentType    The content type of the file you would like to download
