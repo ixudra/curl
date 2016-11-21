@@ -328,8 +328,8 @@ any validation on the cURL options. Additional information about available cURL 
 | withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
 | withOption()          |  none             | Generic method to add any cURL option to the request              |
 
-For specific information regarding parameters and return times, I encourage you to take a look at 
-`ixudra\curl\src\Ixudra\Curl\Builder.php` which has extensive doc blocks that contain all the necessary information
+For specific information regarding parameters and return types, I encourage you to take a look at 
+`ixudra\curl\src\Ixudra\Curl\Builder.php`. This class has extensive doc blocks that contain all the necessary information
 for each specific method.
 
 
