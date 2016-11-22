@@ -271,15 +271,15 @@ This method uses one parameter, which is the name of the file in which the debug
 
     // Send a GET request to http://www.foo.com/bar and log debug information in /path/to/dir/logFile.txt
     $response = Curl::to('http://www.foo.com/bar')
-            ->enableDebug('/path/to/dir/logFile.txt');
-            ->get();
+        ->enableDebug('/path/to/dir/logFile.txt');
+        ->get();
 
 ```
 
 
 ### Using response objects
 
-Be default, the package will only return the content of the request. In some cases, it might also be useful to know
+By default, the package will only return the content of the request. In some cases, it might also be useful to know
 additional request information, such as the HTTP status code and error messages should they occur. In this case, you
 can use the `returnResponseObject()` method, which will return an stdClass that contains additional information as 
 well as the response content:
@@ -288,8 +288,8 @@ well as the response content:
 
     // Send a GET request to http://www.foo.com/bar and return a response object with additional information
     $response = Curl::to('http://www.foo.com/bar')
-            ->returnResponseObject();
-            ->get();
+        ->returnResponseObject();
+        ->get();
             
     $content = $response->content;
 
