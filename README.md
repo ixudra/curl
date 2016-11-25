@@ -109,7 +109,7 @@ Finally, you have to register your ServiceProvider (around line 70-80):
 // $app->register('App\Providers\AppServiceProvider');
 
 // Package service providers
-$app->register('Ixudra\Curl\Providers\CurlServiceProvider');
+$app->register(Ixudra\Curl\CurlServiceProvider::class);
 ```
 
 
