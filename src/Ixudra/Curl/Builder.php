@@ -432,7 +432,7 @@ class Builder {
     {
         $parameterString = '';
         if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
-            $parameterString = '?'. http_build_query($this->packageOptions[ 'data' ]);
+            $parameterString = '?'. http_build_query( $this->packageOptions[ 'data' ], null, '&' );
         }
 
         return $this->curlOptions[ 'URL' ] .= $parameterString;
