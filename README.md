@@ -271,7 +271,7 @@ This method uses one parameter, which is the name of the file in which the debug
 
     // Send a GET request to http://www.foo.com/bar and log debug information in /path/to/dir/logFile.txt
     $response = Curl::to('http://www.foo.com/bar')
-        ->enableDebug('/path/to/dir/logFile.txt');
+        ->enableDebug('/path/to/dir/logFile.txt')
         ->get();
 
 ```
@@ -288,7 +288,7 @@ well as the response content:
 
     // Send a GET request to http://www.foo.com/bar and return a response object with additional information
     $response = Curl::to('http://www.foo.com/bar')
-        ->returnResponseObject();
+        ->returnResponseObject()
         ->get();
             
     $content = $response->content;
