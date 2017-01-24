@@ -15,9 +15,8 @@ class CurlServiceProvider extends ServiceProvider {
      */
     public function register()
     {
-        $this->app['Curl'] = $this->app->share(
-            function($app)
-            {
+        $this->app->singleton('Curl',
+            function () {
                 return new CurlService();
             }
         );
