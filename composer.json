@@ -22,7 +22,5 @@
         "psr-4": {
             "Ixudra\\Curl\\": "src/"
         }
-    },
-
-    "minimum-stability": "stable"
+    }
 }
