@@ -11,7 +11,7 @@ class Builder {
     /** @var array $curlOptions         Array of cURL options */
     protected $curlOptions = array(
         'RETURNTRANSFER'        => true,
-        'FAILONERROR'           => true,
+        'FAILONERROR'           => false,
         'FOLLOWLOCATION'        => false,
         'CONNECTTIMEOUT'        => '',
         'TIMEOUT'               => 30,
