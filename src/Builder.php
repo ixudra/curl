@@ -1,39 +1,38 @@
 <?php namespace Ixudra\Curl;
 
-
 use stdClass;
 
-class Builder {
+class Builder
+{
 
     /** @var resource $curlObject       cURL request */
     protected $curlObject = null;
 
     /** @var array $curlOptions         Array of cURL options */
     protected $curlOptions = array(
-        'RETURNTRANSFER'        => true,
-        'FAILONERROR'           => true,
-        'FOLLOWLOCATION'        => false,
-        'CONNECTTIMEOUT'        => '',
-        'TIMEOUT'               => 30,
-        'USERAGENT'             => '',
-        'URL'                   => '',
-        'POST'                  => false,
-        'HTTPHEADER'            => array(),
+        'RETURNTRANSFER' => true,
+        'FAILONERROR'    => false,
+        'FOLLOWLOCATION' => false,
+        'CONNECTTIMEOUT' => '',
+        'TIMEOUT'        => 30,
+        'USERAGENT'      => '',
+        'URL'            => '',
+        'POST'           => false,
+        'HTTPHEADER'     => array(),
     );
 
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
-        'data'                  => array(),
-        'asJsonRequest'         => false,
-        'asJsonResponse'        => false,
-        'returnAsArray'         => false,
-        'responseObject'        => false,
-        'enableDebug'           => false,
-        'containsFile'          => false,
-        'debugFile'             => '',
-        'saveFile'              => '',
+        'data'           => array(),
+        'asJsonRequest'  => false,
+        'asJsonResponse' => false,
+        'returnAsArray'  => false,
+        'responseObject' => false,
+        'enableDebug'    => false,
+        'containsFile'   => false,
+        'debugFile'      => '',
+        'saveFile'       => '',
     );
-
 
     /**
      * Set the URL to which the request is to be sent
@@ -43,7 +42,7 @@ class Builder {
      */
     public function to($url)
     {
-        return $this->withCurlOption( 'URL', $url );
+        return $this->withCurlOption('URL', $url);
     }
 
     /**
@@ -54,7 +53,7 @@ class Builder {
      */
     public function withTimeout($timeout = 30)
     {
-        return $this->withCurlOption( 'TIMEOUT', $timeout );
+        return $this->withCurlOption('TIMEOUT', $timeout);
     }
 
     /**
@@ -65,7 +64,7 @@ class Builder {
      */
     public function withData($data = array())
     {
-        return $this->withPackageOption( 'data', $data );
+        return $this->withPackageOption('data', $data);
     }
 
     /**
@@ -75,7 +74,7 @@ class Builder {
      */
     public function allowRedirect()
     {
-        return $this->withCurlOption( 'FOLLOWLOCATION', true );
+        return $this->withCurlOption('FOLLOWLOCATION', true);
     }
 
     /**
@@ -87,7 +86,7 @@ class Builder {
     public function asJson($asArray = false)
     {
         return $this->asJsonRequest()
-            ->asJsonResponse( $asArray );
+            ->asJsonResponse($asArray);
     }
 
     /**
@@ -97,7 +96,7 @@ class Builder {
      */
     public function asJsonRequest()
     {
-        return $this->withPackageOption( 'asJsonRequest', true );
+        return $this->withPackageOption('asJsonRequest', true);
     }
 
     /**
@@ -108,19 +107,19 @@ class Builder {
      */
     public function asJsonResponse($asArray = false)
     {
-        return $this->withPackageOption( 'asJsonResponse', true )
-            ->withPackageOption( 'returnAsArray', $asArray );
+        return $this->withPackageOption('asJsonResponse', true)
+            ->withPackageOption('returnAsArray', $asArray);
     }
 
 //    /**
-//     * Send the request over a secure connection
-//     *
-//     * @return Builder
-//     */
-//    public function secure()
-//    {
-//        return $this;
-//    }
+    //     * Send the request over a secure connection
+    //     *
+    //     * @return Builder
+    //     */
+    //    public function secure()
+    //    {
+    //        return $this;
+    //    }
 
     /**
      * Set any specific cURL option
@@ -131,7 +130,7 @@ class Builder {
      */
     public function withOption($key, $value)
     {
-        return $this->withCurlOption( $key, $value );
+        return $this->withCurlOption($key, $value);
     }
 
     /**
@@ -143,7 +142,7 @@ class Builder {
      */
     protected function withCurlOption($key, $value)
     {
-        $this->curlOptions[ $key ] = $value;
+        $this->curlOptions[$key] = $value;
 
         return $this;
     }
@@ -157,7 +156,7 @@ class Builder {
      */
     protected function withPackageOption($key, $value)
     {
-        $this->packageOptions[ $key ] = $value;
+        $this->packageOptions[$key] = $value;
 
         return $this;
     }
@@ -170,7 +169,7 @@ class Builder {
      */
     public function withHeader($header)
     {
-        $this->curlOptions[ 'HTTPHEADER' ][] = $header;
+        $this->curlOptions['HTTPHEADER'][] = $header;
 
         return $this;
     }
@@ -183,8 +182,8 @@ class Builder {
      */
     public function withHeaders(array $headers)
     {
-        $this->curlOptions[ 'HTTPHEADER' ] = array_merge(
-            $this->curlOptions[ 'HTTPHEADER' ], $headers
+        $this->curlOptions['HTTPHEADER'] = array_merge(
+            $this->curlOptions['HTTPHEADER'], $headers
         );
 
         return $this;
@@ -198,8 +197,8 @@ class Builder {
      */
     public function withContentType($contentType)
     {
-        return $this->withHeader( 'Content-Type: '. $contentType )
-            ->withHeader( 'Connection: Keep-Alive' );
+        return $this->withHeader('Content-Type: ' . $contentType)
+            ->withHeader('Connection: Keep-Alive');
     }
 
     /**
@@ -209,7 +208,7 @@ class Builder {
      */
     public function returnResponseObject()
     {
-        return $this->withPackageOption( 'responseObject', true );
+        return $this->withPackageOption('responseObject', true);
     }
 
     /**
@@ -220,8 +219,8 @@ class Builder {
      */
     public function enableDebug($logFile)
     {
-        return $this->withPackageOption( 'enableDebug', true )
-            ->withPackageOption( 'debugFile', $logFile )
+        return $this->withPackageOption('enableDebug', true)
+            ->withPackageOption('debugFile', $logFile)
             ->withOption('VERBOSE', true);
     }
 
@@ -232,7 +231,7 @@ class Builder {
      */
     public function containsFile()
     {
-        return $this->withPackageOption( 'containsFile', true );
+        return $this->withPackageOption('containsFile', true);
     }
 
     /**
@@ -259,32 +258,32 @@ class Builder {
         return $this->send();
     }
 
-     /**
-      * Send a download request to a URL using the specified cURL options
-      *
-      * @param  string $fileName
-      * @return mixed
-      */
-     public function download($fileName)
-     {
-         $this->packageOptions[ 'saveFile' ] = $fileName;
+    /**
+     * Send a download request to a URL using the specified cURL options
+     *
+     * @param  string $fileName
+     * @return mixed
+     */
+    public function download($fileName)
+    {
+        $this->packageOptions['saveFile'] = $fileName;
 
-         return $this->send();
-     }
+        return $this->send();
+    }
 
     /**
      * Add POST parameters to the curlOptions array
      */
     protected function setPostParameters()
     {
-        $this->curlOptions[ 'POST' ] = true;
+        $this->curlOptions['POST'] = true;
 
-        $parameters = $this->packageOptions[ 'data' ];
-        if( $this->packageOptions[ 'asJsonRequest' ] ) {
+        $parameters = $this->packageOptions['data'];
+        if ($this->packageOptions['asJsonRequest']) {
             $parameters = json_encode($parameters);
         }
 
-        $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
+        $this->curlOptions['POSTFIELDS'] = $parameters;
     }
 
     /**
@@ -334,51 +333,51 @@ class Builder {
     protected function send()
     {
         // Add JSON header if necessary
-        if( $this->packageOptions[ 'asJsonRequest' ] ) {
-            $this->withHeader( 'Content-Type: application/json' );
+        if ($this->packageOptions['asJsonRequest']) {
+            $this->withHeader('Content-Type: application/json');
         }
 
-        if( $this->packageOptions[ 'enableDebug' ] ) {
-            $debugFile = fopen( $this->packageOptions[ 'debugFile' ], 'w');
+        if ($this->packageOptions['enableDebug']) {
+            $debugFile = fopen($this->packageOptions['debugFile'], 'w');
             $this->withOption('STDERR', $debugFile);
         }
 
         // Create the request with all specified options
         $this->curlObject = curl_init();
-        $options = $this->forgeOptions();
-        curl_setopt_array( $this->curlObject, $options );
+        $options          = $this->forgeOptions();
+        curl_setopt_array($this->curlObject, $options);
 
         // Send the request
-        $response = curl_exec( $this->curlObject );
+        $response = curl_exec($this->curlObject);
 
         // Capture additional request information if needed
         $responseData = array();
-        if( $this->packageOptions[ 'responseObject' ] ) {
-            $responseData = curl_getinfo( $this->curlObject );
+        if ($this->packageOptions['responseObject']) {
+            $responseData = curl_getinfo($this->curlObject);
 
-            if( curl_errno($this->curlObject) ) {
-                $responseData[ 'errorMessage' ] = curl_error($this->curlObject);
+            if (curl_errno($this->curlObject)) {
+                $responseData['errorMessage'] = curl_error($this->curlObject);
             }
         }
 
-        curl_close( $this->curlObject );
+        curl_close($this->curlObject);
 
-        if( $this->packageOptions[ 'saveFile' ] ) {
+        if ($this->packageOptions['saveFile']) {
             // Save to file if a filename was specified
-            $file = fopen($this->packageOptions[ 'saveFile' ], 'w');
+            $file = fopen($this->packageOptions['saveFile'], 'w');
             fwrite($file, $response);
             fclose($file);
-        } else if( $this->packageOptions[ 'asJsonResponse' ] ) {
+        } else if ($this->packageOptions['asJsonResponse']) {
             // Decode the request if necessary
-            $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
+            $response = json_decode($response, $this->packageOptions['returnAsArray']);
         }
 
-        if( $this->packageOptions[ 'enableDebug' ] ) {
-            fclose( $debugFile );
+        if ($this->packageOptions['enableDebug']) {
+            fclose($debugFile);
         }
 
         // Return the result
-        return $this->returnResponse( $response, $responseData );
+        return $this->returnResponse($response, $responseData);
     }
 
     /**
@@ -388,15 +387,15 @@ class Builder {
      */
     protected function returnResponse($content, $responseData = array())
     {
-        if( !$this->packageOptions[ 'responseObject' ] ) {
+        if (!$this->packageOptions['responseObject']) {
             return $content;
         }
 
-        $object = new stdClass();
+        $object          = new stdClass();
         $object->content = $content;
-        $object->status = $responseData[ 'http_code' ];
-        if( array_key_exists('errorMessage', $responseData) ) {
-            $object->error = $responseData[ 'errorMessage' ];
+        $object->status  = $responseData['http_code'];
+        if (array_key_exists('errorMessage', $responseData)) {
+            $object->error = $responseData['errorMessage'];
         }
 
         return $object;
@@ -410,13 +409,13 @@ class Builder {
     protected function forgeOptions()
     {
         $results = array();
-        foreach( $this->curlOptions as $key => $value ) {
-            $arrayKey = constant( 'CURLOPT_' . $key );
+        foreach ($this->curlOptions as $key => $value) {
+            $arrayKey = constant('CURLOPT_' . $key);
 
-            if( !$this->packageOptions[ 'containsFile' ] && $key == 'POSTFIELDS' && is_array( $value ) ) {
-                $results[ $arrayKey ] = http_build_query( $value, null, '&' );
+            if (!$this->packageOptions['containsFile'] && $key == 'POSTFIELDS' && is_array($value)) {
+                $results[$arrayKey] = http_build_query($value, null, '&');
             } else {
-                $results[ $arrayKey ] = $value;
+                $results[$arrayKey] = $value;
             }
         }
 
@@ -431,11 +430,11 @@ class Builder {
     protected function appendDataToURL()
     {
         $parameterString = '';
-        if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
-            $parameterString = '?'. http_build_query( $this->packageOptions[ 'data' ], null, '&' );
+        if (is_array($this->packageOptions['data']) && count($this->packageOptions['data']) != 0) {
+            $parameterString = '?' . http_build_query($this->packageOptions['data'], null, '&');
         }
 
-        return $this->curlOptions[ 'URL' ] .= $parameterString;
+        return $this->curlOptions['URL'] .= $parameterString;
     }
 
 }
