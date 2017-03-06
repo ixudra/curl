@@ -330,7 +330,7 @@ well as the response content:
 
 The response object will look like this:
 
-```
+```json
 {
    "content": 'Message content here',
    "status": 200,
