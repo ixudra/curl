@@ -332,9 +332,9 @@ The response object will look like this:
 
 ```json
 {
-   "content": 'Message content here',
+   "content": "Message content here",
    "status": 200,
-   "error": 'Error message goes here'       // Only added if an error occurs
+   "error": "Error message goes here"       // Only added if an error occurs
 }
 ```
 
