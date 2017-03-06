@@ -40,12 +40,12 @@ Add the facade to your `config/app.php` file:
 
 ```php
 
-    'facades'       => array(
+    'aliases'       => [
 
         //...
         'Curl'          => Ixudra\Curl\Facades\Curl::class,
 
-    ),
+    ],
 
 ```
 
@@ -164,27 +164,34 @@ In order to send a `GET` request, you need to use the `get()` method that is pro
 Post requests work similar to `GET` requests, but use the `post()` method instead:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a POST request to: http://www.foo.com/bar
-    $response = Curl::to('http://www.foo.com/bar')
-        ->post();
+class Foo
+{
+    public function bar ()
+        {
+        // Send a POST request to: http://www.foo.com/bar
+        $response = Curl::to('http://www.foo.com/bar')
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->post();
+        // Send a POST request to: http://www.foo.com/bar
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson()
-        ->post();
+        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson()
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson( true )
-        ->post();
+        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson( true )
+            ->post();
+        }
+}
 
 ```
 
