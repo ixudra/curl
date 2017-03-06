@@ -334,7 +334,7 @@ The response object will look like this:
 {
    "content": "Message content here",
    "status": 200,
-   "error": "Error message goes here"       // Only added if an error occurs
+   "error": "Error message goes here (Only added if an error occurs)"
 }
 ```
 
