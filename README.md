@@ -20,6 +20,9 @@ Pull this package in through Composer.
 
 ```
 
+or run in terminal:
+`composer require ixudra/curl`
+
 
 ### Laravel 5.* Integration
 
@@ -40,12 +43,12 @@ Add the facade to your `config/app.php` file:
 
 ```php
 
-    'facades'       => array(
+    'aliases'       => [
 
         //...
         'Curl'          => Ixudra\Curl\Facades\Curl::class,
 
-    ),
+    ],
 
 ```
 
@@ -140,22 +143,28 @@ method.
 In order to send a `GET` request, you need to use the `get()` method that is provided by the package:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a GET request to: http://www.foo.com/bar
-    $response = Curl::to('http://www.foo.com/bar')
-        ->get();
+class Foo
+{
+    public function bar ()
+    {
+        // Send a GET request to: http://www.foo.com/bar
+        $response = Curl::to('http://www.foo.com/bar')
+            ->get();
 
-    // Send a GET request to: http://www.foo.com/bar?foz=baz
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->get();
+        // Send a GET request to: http://www.foo.com/bar?foz=baz
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->get();
 
-    // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson()
-        ->get();
-
+        // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson()
+            ->get();
+    }
+}
 ```
 
 
@@ -164,28 +173,34 @@ In order to send a `GET` request, you need to use the `get()` method that is pro
 Post requests work similar to `GET` requests, but use the `post()` method instead:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a POST request to: http://www.foo.com/bar
-    $response = Curl::to('http://www.foo.com/bar')
-        ->post();
+class Foo
+{
+    public function bar ()
+    {
+        // Send a POST request to: http://www.foo.com/bar
+        $response = Curl::to('http://www.foo.com/bar')
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->post();
+        // Send a POST request to: http://www.foo.com/bar
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson()
-        ->post();
+        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson()
+            ->post();
 
-    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
-    $response = Curl::to('http://www.foo.com/bar')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson( true )
-        ->post();
-
+        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
+        $response = Curl::to('http://www.foo.com/bar')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson( true )
+            ->post();
+    }
+}
 ```
 
 
@@ -194,13 +209,19 @@ Post requests work similar to `GET` requests, but use the `post()` method instea
 Put requests work similar to `POST` requests, but use the `put()` method instead:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a PUT request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
-    $response = Curl::to('http://www.foo.com/bar/1')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson()
-        ->put();
-
+class Foo
+{
+    public function bar ()
+    {
+        // Send a PUT request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+        $response = Curl::to('http://www.foo.com/bar/1')
+           ->withData( array( 'foz' => 'baz' ) )
+           ->asJson()
+           ->put();
+    }
+}
 ```
 
 
@@ -209,13 +230,19 @@ Put requests work similar to `POST` requests, but use the `put()` method instead
 Patch requests work similar to `POST` requests, but use the `patch()` method instead:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a PATCH request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
-    $response = Curl::to('http://www.foo.com/bar/1')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->asJson()
-        ->patch();
-
+class Foo
+{
+    public function bar ()
+    {
+        // Send a PATCH request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+        $response = Curl::to('http://www.foo.com/bar/1')
+            ->withData( array( 'foz' => 'baz' ) )
+            ->asJson()
+            ->patch();
+    }
+}
 ```
 
 
@@ -224,12 +251,18 @@ Patch requests work similar to `POST` requests, but use the `patch()` method ins
 Delete requests work similar to `GET` requests, but use the `delete()` method instead:
 
 ```php
+use Ixudra\Curl\Facades\Curl;
 
-    // Send a DELETE request to: http://www.foo.com/bar/1 using JSON
-    $response = Curl::to('http://www.foo.com/bar/1')
-        ->asJson()
-        ->delete();
-
+class Foo
+{
+    public function bar ()
+    {
+        // Send a DELETE request to: http://www.foo.com/bar/1 using JSON
+        $response = Curl::to('http://www.foo.com/bar/1')
+            ->asJson()
+            ->delete();
+    }
+}
 ```
 
 
@@ -297,11 +330,11 @@ well as the response content:
 
 The response object will look like this:
 
-```
+```json
 {
-   "content": 'Message content here',
+   "content": "Message content here",
    "status": 200,
-   "error": 'Error message goes here'       // Only added if an error occurs
+   "error": "Error message goes here (Only added if an error occurs)"
 }
 ```
 
