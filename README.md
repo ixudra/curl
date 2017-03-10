@@ -3,6 +3,20 @@ ixudra/curl
 
 Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra](http://ixudra.be).
 
+The package provides an easy interface for sending cURL requests from your PHP web application. The package provides an 
+intuitive, fluent interface similar the Laravel query builder to easily configure the request. Additionally, There are 
+several utility methods that allow you to easily add certain options to the request. This makes it easier to create and
+use cURL requests and also makes your code more readible and comprehensible.
+
+The provided functionality is completely framework-independent but also contains a Laravel service provider for easy 
+integration into your Laravel project.
+ 
+
+ > Note before posting an issue: When posting an issue for the package, always be sure to provide as much information 
+ > regarding the request as possible. This includes the example cURL request you are trying to transfer into the package
+ > syntax, your actual package syntax (the full request) and (if possible) an example URL I can use to test the request
+ > myself if need be.
+
 
 
 
@@ -143,28 +157,24 @@ method.
 In order to send a `GET` request, you need to use the `get()` method that is provided by the package:
 
 ```php
-use Ixudra\Curl\Facades\Curl;
 
-class Foo
-{
-    public function bar ()
-    {
-        // Send a GET request to: http://www.foo.com/bar
-        $response = Curl::to('http://www.foo.com/bar')
-            ->get();
+    use Ixudra\Curl\Facades\Curl;
 
-        // Send a GET request to: http://www.foo.com/bar?foz=baz
-        $response = Curl::to('http://www.foo.com/bar')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->get();
+    // Send a GET request to: http://www.foo.com/bar
+    $response = Curl::to('http://www.foo.com/bar')
+        ->get();
 
-        // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
-        $response = Curl::to('http://www.foo.com/bar')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->asJson()
-            ->get();
-    }
-}
+    // Send a GET request to: http://www.foo.com/bar?foz=baz
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->get();
+
+    // Send a GET request to: http://www.foo.com/bar?foz=baz using JSON
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->get();
+
 ```
 
 
@@ -173,34 +183,30 @@ class Foo
 Post requests work similar to `GET` requests, but use the `post()` method instead:
 
 ```php
-use Ixudra\Curl\Facades\Curl;
 
-class Foo
-{
-    public function bar ()
-    {
-        // Send a POST request to: http://www.foo.com/bar
-        $response = Curl::to('http://www.foo.com/bar')
-            ->post();
+    use Ixudra\Curl\Facades\Curl;
 
-        // Send a POST request to: http://www.foo.com/bar
-        $response = Curl::to('http://www.foo.com/bar')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->post();
+    // Send a POST request to: http://www.foo.com/bar
+    $response = Curl::to('http://www.foo.com/bar')
+        ->post();
+    
+    // Send a POST request to: http://www.foo.com/bar
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->post();
+    
+    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->post();
+    
+    // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson( true )
+        ->post();
 
-        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON
-        $response = Curl::to('http://www.foo.com/bar')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->asJson()
-            ->post();
-
-        // Send a POST request to: http://www.foo.com/bar with arguments 'foz' = 'baz' using JSON and return as associative array
-        $response = Curl::to('http://www.foo.com/bar')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->asJson( true )
-            ->post();
-    }
-}
 ```
 
 
@@ -209,19 +215,15 @@ class Foo
 Put requests work similar to `POST` requests, but use the `put()` method instead:
 
 ```php
-use Ixudra\Curl\Facades\Curl;
 
-class Foo
-{
-    public function bar ()
-    {
-        // Send a PUT request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
-        $response = Curl::to('http://www.foo.com/bar/1')
-           ->withData( array( 'foz' => 'baz' ) )
-           ->asJson()
-           ->put();
-    }
-}
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a PUT request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+       ->withData( array( 'foz' => 'baz' ) )
+       ->asJson()
+       ->put();
+
 ```
 
 
@@ -230,19 +232,15 @@ class Foo
 Patch requests work similar to `POST` requests, but use the `patch()` method instead:
 
 ```php
-use Ixudra\Curl\Facades\Curl;
 
-class Foo
-{
-    public function bar ()
-    {
-        // Send a PATCH request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
-        $response = Curl::to('http://www.foo.com/bar/1')
-            ->withData( array( 'foz' => 'baz' ) )
-            ->asJson()
-            ->patch();
-    }
-}
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a PATCH request to: http://www.foo.com/bar/1 with arguments 'foz' = 'baz' using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+        ->withData( array( 'foz' => 'baz' ) )
+        ->asJson()
+        ->patch();
+
 ```
 
 
@@ -251,18 +249,14 @@ class Foo
 Delete requests work similar to `GET` requests, but use the `delete()` method instead:
 
 ```php
-use Ixudra\Curl\Facades\Curl;
 
-class Foo
-{
-    public function bar ()
-    {
-        // Send a DELETE request to: http://www.foo.com/bar/1 using JSON
-        $response = Curl::to('http://www.foo.com/bar/1')
-            ->asJson()
-            ->delete();
-    }
-}
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a DELETE request to: http://www.foo.com/bar/1 using JSON
+    $response = Curl::to('http://www.foo.com/bar/1')
+        ->asJson()
+        ->delete();
+
 ```
 
 
@@ -271,6 +265,8 @@ class Foo
 For sending files via a POST request, you can use the `containsFile` method to correctly format a request before sending:
 
 ```php
+
+    use Ixudra\Curl\Facades\Curl;
 
     $response = Curl::to('http://foo.com/bar.png')
         ->withContentType('multipart/form-data')
@@ -287,6 +283,8 @@ For downloading a file, you can use the `download()` method:
 
 ```php
 
+    use Ixudra\Curl\Facades\Curl;
+
     // Download an image from: file http://www.foo.com/bar.png
     $response = Curl::to('http://foo.com/bar.png')
         ->withContentType('image/png')
@@ -301,6 +299,8 @@ In case a request fails, it might be useful to get debug the request. In this ca
 This method uses one parameter, which is the name of the file in which the debug information is to be stored:
 
 ```php
+
+    use Ixudra\Curl\Facades\Curl;
 
     // Send a GET request to http://www.foo.com/bar and log debug information in /path/to/dir/logFile.txt
     $response = Curl::to('http://www.foo.com/bar')
@@ -318,6 +318,8 @@ can use the `returnResponseObject()` method, which will return an stdClass that 
 well as the response content:
 
 ```php
+
+    use Ixudra\Curl\Facades\Curl;
 
     // Send a GET request to http://www.foo.com/bar and return a response object with additional information
     $response = Curl::to('http://www.foo.com/bar')
