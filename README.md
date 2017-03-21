@@ -47,7 +47,7 @@ Add the service provider to your `config/app.php` file:
     'providers'     => array(
 
         //...
-        Ixudra\Curl\CurlServiceProvider::class,
+        Ixudra\curl\CurlServiceProvider::class,
 
     ),
 
@@ -126,7 +126,7 @@ Finally, you have to register your ServiceProvider (around line 70-80):
 // $app->register('App\Providers\AppServiceProvider');
 
 // Package service providers
-$app->register(Ixudra\Curl\CurlServiceProvider::class);
+$app->register(Ixudra\curl\CurlServiceProvider::class);
 ```
 
 
