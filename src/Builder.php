@@ -135,28 +135,26 @@ class Builder {
     }
 
     /**
-	 * Set Cookie File
-	 *
-	 * @param string $cookie_file file name to read cookies from
-	 *
-	 * @return Builder
-	 */
-	public function setCookieFile($cookie_file)
-	{
-		return $this->withOption('CURLOPT_COOKIEFILE', $cookie_file);
-	}
+     * Set Cookie File
+     *
+     * @param   string $cookieFile  File name to read cookies from
+     * @return Builder
+     */
+    public function setCookieFile($cookieFile)
+    {
+        return $this->withOption( 'COOKIEFILE', $cookieFile );
+    }
 
-	/**
-	 * Set Cookie Jar
-	 *
-	 * @param string $cookie_jar file name to store cookies to
-	 *
-	 * @return Builder
-	 */
-	public function setCookieJar($cookie_jar)
-	{
-		return $this->withOption('CURLOPT_COOKIEJAR', $cookie_jar);
-	}
+    /**
+     * Set Cookie Jar
+     *
+     * @param   string $cookieJar   File name to store cookies to
+     * @return Builder
+     */
+    public function setCookieJar($cookieJar)
+    {
+        return $this->withOption( 'COOKIEJAR', $cookieJar );
+    }
     
     /**
      * Set any specific cURL option
@@ -246,7 +244,7 @@ class Builder {
     {
         return $this->withPackageOption( 'enableDebug', true )
             ->withPackageOption( 'debugFile', $logFile )
-            ->withOption('VERBOSE', true);
+            ->withOption( 'VERBOSE', true );
     }
 
     /**

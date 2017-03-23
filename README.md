@@ -6,7 +6,7 @@ Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra]
 The package provides an easy interface for sending cURL requests from your PHP web application. The package provides an 
 intuitive, fluent interface similar the Laravel query builder to easily configure the request. Additionally, There are 
 several utility methods that allow you to easily add certain options to the request. This makes it easier to create and
-use cURL requests and also makes your code more readible and comprehensible.
+use cURL requests and also makes your code more comprehensible.
 
 The provided functionality is completely framework-independent but also contains a Laravel service provider for easy 
 integration into your Laravel project.
@@ -57,12 +57,12 @@ Add the facade to your `config/app.php` file:
 
 ```php
 
-    'aliases'       => [
+    'aliases'       => array(
 
         //...
         'Curl'          => Ixudra\Curl\Facades\Curl::class,
 
-    ],
+    ),
 
 ```
 
@@ -361,6 +361,8 @@ any validation on the cURL options. Additional information about available cURL 
 | withContentType()     |  none             | Set the content type of the response                              |
 | containsFile()        |  false            | Should be used to submit files through forms                      |
 | withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
+| setCookieFile()       |  none             | Set a file to store cookies in                                    |
+| setCookieJar()        |  none             | Set a file to read cookies from                                   |
 | withOption()          |  none             | Generic method to add any cURL option to the request              |
 
 For specific information regarding parameters and return types, I encourage you to take a look at 
