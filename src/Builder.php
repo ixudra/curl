@@ -135,6 +135,30 @@ class Builder {
     }
 
     /**
+	 * Set Cookie File
+	 *
+	 * @param string $cookie_file file name to read cookies from
+	 *
+	 * @return Builder
+	 */
+	public function setCookieFile($cookie_file)
+	{
+		return $this->withOption('CURLOPT_COOKIEFILE', $cookie_file);
+	}
+
+	/**
+	 * Set Cookie Jar
+	 *
+	 * @param string $cookie_jar file name to store cookies to
+	 *
+	 * @return Builder
+	 */
+	public function setCookieJar($cookie_jar)
+	{
+		return $this->withOption('CURLOPT_COOKIEJAR', $cookie_jar);
+	}
+    
+    /**
      * Set any specific cURL option
      *
      * @param   string $key         The name of the cURL option
