@@ -19,6 +19,7 @@ class Builder {
         'URL'                   => '',
         'POST'                  => false,
         'HTTPHEADER'            => array(),
+        'SSL_VERIFYPEER'        => false,
     );
 
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
