@@ -1,6 +1,7 @@
 <?php namespace Ixudra\Curl;
 
 
+use Illuminate\Http\Response;
 use stdClass;
 
 class Builder {
@@ -415,12 +416,17 @@ class Builder {
             return $content;
         }
 
-        $object = new stdClass();
-        $object->content = $content;
-        $object->status = $responseData[ 'http_code' ];
-        if( array_key_exists('errorMessage', $responseData) ) {
-            $object->error = $responseData[ 'errorMessage' ];
-        }
+//        $object = new stdClass();
+//        $object->content = $content;
+//        $object->status = $responseData[ 'http_code' ];
+//        if( array_key_exists('errorMessage', $responseData) ) {
+//            $object->error = $responseData[ 'errorMessage' ];
+//        }
+        $object = new Response(
+            $content,
+            $responseData['http_code'],
+            $responseData['content_type']
+        );
 
         return $object;
     }
