@@ -50,12 +50,12 @@ class Builder {
     /**
      * Set the request timeout
      *
-     * @param   integer $timeout    The timeout for the request (in seconds. Default: 30 seconds)
+     * @param   float $timeout    The timeout for the request (in seconds, fractions of a second are okay. Default: 30 seconds)
      * @return Builder
      */
     public function withTimeout($timeout = 30)
     {
-        return $this->withCurlOption( 'TIMEOUT', $timeout );
+        return $this->withCurlOption( 'TIMEOUT_MS', ($timeout * 1000) );
     }
 
     /**
