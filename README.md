@@ -397,7 +397,7 @@ any validation on the cURL options. Additional information about available cURL 
 
 | Method                |  Default value    | Description                                                       |
 |-----------------------|-------------------|-------------------------------------------------------------------|
-| withTimeout()         |  30 seconds       | Set the timeout of the request                                    |
+| withTimeout()         |  30 seconds       | Set the timeout of the request (integer or float)                 |
 | allowRedirect()       |  false            | Allow the request to be redirected internally                     |
 | asJsonRequest()       |  false            | Submit the request data as JSON                                   |
 | asJsonResponse()      |  false            | Decode the response data from JSON                                |
