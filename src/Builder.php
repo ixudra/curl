@@ -53,7 +53,7 @@ class Builder {
      * @param   float $timeout    The timeout for the request (in seconds, fractions of a second are okay. Default: 30 seconds)
      * @return Builder
      */
-    public function withTimeout($timeout = 30)
+    public function withTimeout($timeout = 30.0)
     {
         return $this->withCurlOption( 'TIMEOUT_MS', ($timeout * 1000) );
     }
@@ -64,7 +64,7 @@ class Builder {
      * @param   array $data     Array of data that is to be sent along with the request
      * @return Builder
      */
-    public function withData($data = array())
+    public function withData(array $data = array())
     {
         return $this->withPackageOption( 'data', $data );
     }
@@ -409,7 +409,7 @@ class Builder {
      * @param   array $responseData     Additional response information
      * @return stdClass
      */
-    protected function returnResponse($content, $responseData = array())
+    protected function returnResponse($content, array $responseData = array())
     {
         if( !$this->packageOptions[ 'responseObject' ] ) {
             return $content;
