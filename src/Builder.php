@@ -25,11 +25,14 @@ class Builder {
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
         'data'                  => array(),
+        'files'                 => array(),
         'asJsonRequest'         => false,
         'asJsonResponse'        => false,
         'returnAsArray'         => false,
         'responseObject'        => false,
+        'responseArray'         => false,
         'enableDebug'           => false,
+        'xDebugSessionName'     => '',
         'containsFile'          => false,
         'debugFile'             => '',
         'saveFile'              => '',
@@ -67,6 +70,29 @@ class Builder {
     public function withData(array $data = array())
     {
         return $this->withPackageOption( 'data', $data );
+    }
+
+    /**
+     * Add a file to the request
+     *
+     * @param   string $key          Identifier of the file (how it will be referenced by the server in the $_FILES array)
+     * @param   string $path         Full path to the file you want to send
+     * @param   string $mimeType     Mime type of the file
+     * @param   string $postFileName Name of the file when sent. Defaults to file name
+     *
+     * @return Builder
+     */
+    public function withFile($key, $path, $mimeType = '', $postFileName = '')
+    {
+        $fileData = array(
+            'fileName'     => $path,
+            'mimeType'     => $mimeType,
+            'postFileName' => $postFileName,
+        );
+
+        $this->packageOptions[ 'files' ][ $key ] = $fileData;
+
+        return $this->containsFile();
     }
 
     /**
@@ -236,6 +262,16 @@ class Builder {
     }
 
     /**
+     * Return a full response array with HTTP status and headers instead of only the content
+     *
+     * @return Builder
+     */
+    public function returnResponseArray()
+    {
+        return $this->withPackageOption( 'responseArray', true );
+    }
+
+    /**
      * Enable debug mode for the cURL request
      *
      * @param   string $logFile    The full path to the log file you want to use
@@ -256,6 +292,19 @@ class Builder {
     public function containsFile()
     {
         return $this->withPackageOption( 'containsFile', true );
+    }
+
+    /**
+     * Add the XDebug session name to the request to allow for easy debugging
+     *
+     * @param  string $sessionName
+     * @return Builder
+     */
+    public function enableXDebug($sessionName = 'session_1')
+    {
+        $this->packageOptions[ 'xDebugSessionName' ] = $sessionName;
+
+        return $this;
     }
 
     /**
@@ -303,11 +352,33 @@ class Builder {
         $this->curlOptions[ 'POST' ] = true;
 
         $parameters = $this->packageOptions[ 'data' ];
+        if( !empty($this->packageOptions[ 'files' ]) ) {
+            foreach( $this->packageOptions[ 'files' ] as $key => $file ) {
+                $parameters[ $key ] = $this->getCurlFileValue( $file[ 'fileName' ], $file[ 'mimeType' ], $file[ 'postFileName'] );
+            }
+        }
+
         if( $this->packageOptions[ 'asJsonRequest' ] ) {
             $parameters = json_encode($parameters);
         }
 
         $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
+    }
+
+    protected function getCurlFileValue($filename, $mimeType, $postFileName)
+    {
+        // PHP 5 >= 5.5.0, PHP 7
+        if( function_exists('curl_file_create') ) {
+            return curl_file_create($filename, $mimeType, $postFileName);
+        }
+
+        // Use the old style if using an older version of PHP
+        $value = "@{$filename};filename=" . $postFileName;
+        if( $mimeType ) {
+            $value .= ';type=' . $mimeType;
+        }
+
+        return $value;
     }
 
     /**
@@ -376,7 +447,7 @@ class Builder {
 
         // Capture additional request information if needed
         $responseData = array();
-        if( $this->packageOptions[ 'responseObject' ] ) {
+        if( $this->packageOptions[ 'responseObject' ] || $this->packageOptions[ 'responseArray' ] ) {
             $responseData = curl_getinfo( $this->curlObject );
 
             if( curl_errno($this->curlObject) ) {
@@ -407,14 +478,10 @@ class Builder {
     /**
      * @param   mixed $content          Content of the request
      * @param   array $responseData     Additional response information
-     * @return stdClass
+     * @return mixed
      */
     protected function returnResponse($content, array $responseData = array())
     {
-        if( !$this->packageOptions[ 'responseObject' ] ) {
-            return $content;
-        }
-
         $object = new stdClass();
         $object->content = $content;
         $object->status = $responseData[ 'http_code' ];
@@ -422,7 +489,15 @@ class Builder {
             $object->error = $responseData[ 'errorMessage' ];
         }
 
-        return $object;
+        if( $this->packageOptions[ 'responseObject' ] ) {
+            return $object;
+        }
+
+        if( $this->packageOptions[ 'responseArray' ] ) {
+            return (array) $object;
+        }
+
+        return $content;
     }
 
     /**
@@ -442,6 +517,13 @@ class Builder {
                 $results[ $arrayKey ] = $value;
             }
         }
+
+        if( !empty($this->packageOptions[ 'xDebugSessionName' ]) ) {
+            $char = strpos($this->curlOptions[ 'URL' ], '?') ? '&' : '?';
+            $this->curlOptions[ 'URL' ] .= $char . 'XDEBUG_SESSION_START='. $this->packageOptions[ 'xDebugSessionName' ];
+        }
+
+        dd( $this->curlOptions );
 
         return $results;
     }

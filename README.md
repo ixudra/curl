@@ -308,19 +308,24 @@ Sending custom headers is easy with the `withcontentType()` method. Multiple cal
 
 ### Sending files via Curl
 
-For sending files via a POST request, you can use the `containsFile` method to correctly format a request before sending:
+For sending files via a POST request, you can use the `withFile` method to correctly format a request before sending:
 
 ```php
 
     use Ixudra\Curl\Facades\Curl;
 
-    $response = Curl::to('http://foo.com/bar.png')
-        ->withContentType('multipart/form-data')
-        ->withData( array( 'foz' => 'baz' ) )
-        ->containsFile()
+    $response = Curl::to('http://foo.com/bar')
+        ->withData( array( 'Foo' => 'Bar' ) )
+        ->withFile( 'image_1', '/path/to/dir/image1.png', 'image/png', 'imageName1.png' )
+        ->withFile( 'image_2', '/path/to/dir/image2.png', 'image/png', 'imageName2.png' )
         ->post();
 
 ```
+
+You can add as many files to the request as you want. A couple of things to keep in mind:
+
+- When submitting files, the `asJson()` method and `asJsonRequest()` method cannot be used. If you do, the files will not be transferred correctly
+- The files are added to the data that was provided in the `withData()` method using the first parameter of the `withFile()` method. If this key already exists, it will be overridden.
 
 
 ### Downloading files
@@ -405,6 +410,7 @@ any validation on the cURL options. Additional information about available cURL 
 | withHeader()          |  array()          | Add an HTTP header to the request                                 |
 | withHeaders()         |  array()          | Add multiple HTTP headers to the request                          |
 | withContentType()     |  none             | Set the content type of the response                              |
+| withFile()            |  none             | Add a file to the form data to be sent                            |
 | containsFile()        |  false            | Should be used to submit files through forms                      |
 | withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
 | setCookieFile()       |  none             | Set a file to store cookies in                                    |
