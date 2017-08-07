@@ -482,6 +482,10 @@ class Builder {
      */
     protected function returnResponse($content, array $responseData = array())
     {
+        if( !$this->packageOptions[ 'responseObject' ] && !$this->packageOptions[ 'responseArray' ] ) {
+            return $content;
+        }
+
         $object = new stdClass();
         $object->content = $content;
         $object->status = $responseData[ 'http_code' ];
@@ -522,8 +526,6 @@ class Builder {
             $char = strpos($this->curlOptions[ 'URL' ], '?') ? '&' : '?';
             $this->curlOptions[ 'URL' ] .= $char . 'XDEBUG_SESSION_START='. $this->packageOptions[ 'xDebugSessionName' ];
         }
-
-        dd( $this->curlOptions );
 
         return $results;
     }
