@@ -64,10 +64,10 @@ class Builder {
     /**
      * Add GET or POST data to the request
      *
-     * @param   array $data     Array of data that is to be sent along with the request
+     * @param   mixed $data     Array of data that is to be sent along with the request
      * @return Builder
      */
-    public function withData(array $data = array())
+    public function withData($data = array())
     {
         return $this->withPackageOption( 'data', $data );
     }
