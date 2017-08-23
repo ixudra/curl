@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.12.2 - 2017-08-23
+### Fixed
+- Reverted type hinting in `withData()` method
+
 ## 6.12.1 - 2017-08-07
 ### Fixed
 - Removed debug code
