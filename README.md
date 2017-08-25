@@ -1,6 +1,10 @@
 ixudra/curl
 ================
 
+[![Latest Version on Packagist](https://img.shields.io/packagist/v/ixudra/curl.svg?style=flat-square)](https://packagist.org/packages/ixudra/curl)
+[![StyleCI](https://styleci.io/repos/18486198/shield)](https://styleci.io/repos/18486198)
+[![Total Downloads](https://img.shields.io/packagist/dt/ixudra/curl.svg?style=flat-square)](https://packagist.org/packages/ixudra/curl)
+
 Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra](http://ixudra.be).
 
 The package provides an easy interface for sending cURL requests from your PHP web application. The package provides an 
