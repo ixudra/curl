@@ -2,6 +2,7 @@ ixudra/curl
 ================
 
 [![Latest Version on Packagist](https://img.shields.io/packagist/v/ixudra/curl.svg?style=flat-square)](https://packagist.org/packages/ixudra/curl)
+[![license](https://img.shields.io/github/license/ixudra/curl.svg)]()
 [![StyleCI](https://styleci.io/repos/18486198/shield)](https://styleci.io/repos/18486198)
 [![Total Downloads](https://img.shields.io/packagist/dt/ixudra/curl.svg?style=flat-square)](https://packagist.org/packages/ixudra/curl)
 
