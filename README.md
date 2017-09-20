@@ -418,8 +418,8 @@ any validation on the cURL options. Additional information about available cURL 
 | withFile()            |  none             | Add a file to the form data to be sent                            |
 | containsFile()        |  false            | Should be used to submit files through forms                      |
 | withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
-| setCookieFile()       |  none             | Set a file to store cookies in                                    |
-| setCookieJar()        |  none             | Set a file to read cookies from                                   |
+| setCookieFile()       |  none             | Set a file to read cookies from                                   |
+| setCookieJar()        |  none             | Set a file to store cookies in                                    |
 | withOption()          |  none             | Generic method to add any cURL option to the request              |
 
 For specific information regarding parameters and return types, I encourage you to take a look at 
