@@ -413,12 +413,12 @@ any validation on the cURL options. Additional information about available cURL 
 | asJsonRequest()       |  false            | Submit the request data as JSON                                   |
 | asJsonResponse()      |  false            | Decode the response data from JSON                                |
 | asJson()              |  false            | Utility method to set both `asJsonRequest()` and `asJsonResponse()` at the same time   |
-| withHeader()          |  array()          | Add an HTTP header to the request                                 |
-| withHeaders()         |  array()          | Add multiple HTTP headers to the request                          |
+| withHeader()          |  array            | Add an HTTP header to the request                                 |
+| withHeaders()         |  array            | Add multiple HTTP headers to the request                          |
 | withContentType()     |  none             | Set the content type of the response                              |
 | withFile()            |  none             | Add a file to the form data to be sent                            |
 | containsFile()        |  false            | Should be used to submit files through forms                      |
-| withData()            |  array()          | Add an array of data to sent with the request (GET or POST)       |
+| withData()            |  array            | Add an array of data to sent with the request (GET or POST)       |
 | setCookieFile()       |  none             | Set a file to read cookies from                                   |
 | setCookieJar()        |  none             | Set a file to store cookies in                                    |
 | withOption()          |  none             | Generic method to add any cURL option to the request              |
