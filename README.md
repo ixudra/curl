@@ -375,6 +375,7 @@ The response object will look like this:
 {
    "content": "Message content here",
    "status": 200,
+   "contentType": "content-type response header (ex: application/json)",
    "error": "Error message goes here (Only added if an error occurs)"
 }
 ```
