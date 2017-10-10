@@ -489,6 +489,7 @@ class Builder {
         $object = new stdClass();
         $object->content = $content;
         $object->status = $responseData[ 'http_code' ];
+        $object->contentType = $responseData[ 'content_type' ];
         if( array_key_exists('errorMessage', $responseData) ) {
             $object->error = $responseData[ 'errorMessage' ];
         }
