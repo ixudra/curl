@@ -22,5 +22,15 @@
         "psr-4": {
             "Ixudra\\Curl\\": "src/"
         }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Ixudra\\Curl\\CurlServiceProvider"
+            ],
+            "aliases": {
+                "Curl": "Ixudra\\Curl\\Facades\\Curl"
+            }
+        }
     }
 }
