@@ -42,6 +42,10 @@ Pull this package in through Composer.
 or run in terminal:
 `composer require ixudra/curl`
 
+### Laravel 5.5+ Integration
+
+Laravel's package discovery will take care of integration for you.
+
 
 ### Laravel 5.* Integration
 
