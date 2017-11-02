@@ -285,6 +285,52 @@ class Builder {
     }
 
     /**
+     * Enable Proxy for the cURL request
+     *
+     * @param   string $proxy    Proxy hostname
+     * @return Builder
+     */
+    public function enableProxy($proxy)
+    {
+        return $this->withPackageOption( 'enableProxy', true )
+            ->withOption( 'PROXY', $proxy );
+    }
+
+    /**
+     * Allow User to specify Proxy port seperately. It will work only if Proxy
+     * is enabled using `enableProxy` method.
+     *
+     * @param   int $proxyPort     Proxy port
+     * @return Builder
+     */
+    public function withProxyPort($proxyPort)
+    {
+        if ( $this->packageOptions[ 'enableProxy' ] ) {
+            $this->withOption( 'PROXYPORT', $proxyPort );
+        }
+
+        return $this;
+    }
+
+    /**
+     * Allow User to specify Proxy authentication credentials. It will add
+     * authentication credentials only if Proxy is enabled using `enableProxy`
+     * method.
+     *
+     * @param   string $proxyUsername     Proxy Authentication Username
+     * @param   string $proxyPassword     Proxy Authentication Password
+     * @return Builder
+     */
+    public function withProxyAuth($proxyUsername, $proxyPassword)
+    {
+        if ( $this->packageOptions[ 'enableProxy' ] ) {
+            $this->withOption( 'PROXYUSERPWD', $proxyUsername . ':' . $proxyPassword );
+        }
+
+        return $this;
+    }
+
+    /**
      * Enable File sending
      *
      * @return Builder
