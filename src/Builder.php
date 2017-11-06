@@ -287,44 +287,27 @@ class Builder {
     /**
      * Enable Proxy for the cURL request
      *
-     * @param   string $proxy    Proxy hostname
+     * @param   string $proxy       Hostname
+     * @param   string $port        Port to be used
+     * @param   string $type        Scheme to be used by the proxy
+     * @param   string $username    Authentication username
+     * @param   string $password    Authentication password
      * @return Builder
      */
-    public function enableProxy($proxy)
+    public function withProxy($proxy, $port = '', $type = '', $username = '', $password = '')
     {
-        return $this->withPackageOption( 'enableProxy', true )
-            ->withOption( 'PROXY', $proxy );
-    }
+        $this->withOption( 'PROXY', $proxy );
 
-    /**
-     * Allow User to specify Proxy port seperately. It will work only if Proxy
-     * is enabled using `enableProxy` method.
-     *
-     * @param   int $proxyPort     Proxy port
-     * @return Builder
-     */
-    public function withProxyPort($proxyPort)
-    {
-        if ( $this->packageOptions[ 'enableProxy' ] ) {
-            $this->withOption( 'PROXYPORT', $proxyPort );
+        if( !empty($port) ) {
+            $this->withOption( 'PROXYPORT', $proxy );
         }
 
-        return $this;
-    }
+        if( !empty($type) ) {
+            $this->withOption( 'PROXYTYPE', $type );
+        }
 
-    /**
-     * Allow User to specify Proxy authentication credentials. It will add
-     * authentication credentials only if Proxy is enabled using `enableProxy`
-     * method.
-     *
-     * @param   string $proxyUsername     Proxy Authentication Username
-     * @param   string $proxyPassword     Proxy Authentication Password
-     * @return Builder
-     */
-    public function withProxyAuth($proxyUsername, $proxyPassword)
-    {
-        if ( $this->packageOptions[ 'enableProxy' ] ) {
-            $this->withOption( 'PROXYUSERPWD', $proxyUsername . ':' . $proxyPassword );
+        if( !empty($username) && !empty($password) ) {
+            $this->withOption( 'PROXYUSERPWD', $username .':'. $password );
         }
 
         return $this;

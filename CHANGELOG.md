@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.15.0 - 2017-11-06
+### Added
+- Added withProxy method
+
 ## 6.14.0 - 2017-10-30
 ### Added
 - Laravel auto-discovery

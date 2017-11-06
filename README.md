@@ -301,7 +301,7 @@ Alternatively, you can use the `withHeaders()` to combine multiple headers into 
 
 ### Specifying the content type
 
-Sending custom headers is easy with the `withcontentType()` method. Multiple calls can be chained together to add multiple headers to the request:
+Sending custom headers is easy with the `withContentType()` method. Multiple calls can be chained together to add multiple headers to the request:
 
 ```php
 
@@ -310,6 +310,30 @@ Sending custom headers is easy with the `withcontentType()` method. Multiple cal
     // Send a GET request to: http://www.foo.com/bar with a json content type
     $response = Curl::to('http://foo.com/bar')
         ->withContentType('application/json')
+        ->get();
+
+```
+
+
+### Using proxies
+
+If you need to send your requests via a proxy, you can use the 'withProxy()' method. The method takes five parameters:
+
+- proxy url (required)
+- port (optional)
+- type of proxy scheme (optional, e.g. `http://`, `https://`, ...)
+- username (optional)
+- password (optional)
+
+Optional parameters will be ignored if not filled in.
+
+```php
+
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a GET request to: http://www.foo.com/bar with a json content type
+    $response = Curl::to('http://foo.com/bar')
+        ->withProxy('192.168.1.1', 80, 'http://', 'Foo', 'Bar')
         ->get();
 
 ```
