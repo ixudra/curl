@@ -299,7 +299,7 @@ class Builder {
         $this->withOption( 'PROXY', $proxy );
 
         if( !empty($port) ) {
-            $this->withOption( 'PROXYPORT', $proxy );
+            $this->withOption( 'PROXYPORT', $port );
         }
 
         if( !empty($type) ) {
