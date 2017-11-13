@@ -422,13 +422,13 @@ class Builder {
 //        if( array_key_exists('errorMessage', $responseData) ) {
 //            $object->error = $responseData[ 'errorMessage' ];
 //        }
-        $object = new Response([
+        $object = new Response(
             $content,
             $responseData['http_code'],
             [
                 'Content-Type'  =>  $responseData['content_type']
             ]
-        ]);
+        );
 
         return $object;
     }
