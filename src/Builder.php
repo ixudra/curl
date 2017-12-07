@@ -20,6 +20,7 @@ class Builder {
         'POST'                  => false,
         'HTTPHEADER'            => array(),
         'SSL_VERIFYPEER'        => false,
+        'HEADER'                => false,
     );
 
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
@@ -474,6 +475,13 @@ class Builder {
         // Send the request
         $response = curl_exec( $this->curlObject );
 
+        $response_header = null;
+        if( $this->curlOptions[ 'HEADER' ]) {
+            $header_size = curl_getinfo( $this->curlObject, CURLINFO_HEADER_SIZE );
+            $response_header = substr( $response, 0, $header_size );
+            $response = substr( $response, $header_size );
+        }
+
         // Capture additional request information if needed
         $responseData = array();
         if( $this->packageOptions[ 'responseObject' ] || $this->packageOptions[ 'responseArray' ] ) {
@@ -501,7 +509,18 @@ class Builder {
         }
 
         // Return the result
-        return $this->returnResponse( $response, $responseData );
+        return $this->returnResponse( $response_header, $response, $responseData );
+    }
+
+    protected function parseHeader($response_header) {
+        $res = array_filter( array_map( function( $x ) {
+            $arr = array_map( "trim", explode( ":", $x, 2 ) );
+            if( sizeof($arr) == 2 ) {
+                return [$arr[0] => $arr[1]];
+            }
+        }, array_filter( array_map( "trim", explode( "\r\n", $response_header ) ) ) ) );
+
+        return array_collapse($res);
     }
 
     /**
@@ -509,7 +528,7 @@ class Builder {
      * @param   array $responseData     Additional response information
      * @return mixed
      */
-    protected function returnResponse($content, array $responseData = array())
+    protected function returnResponse($header, $content, array $responseData = array())
     {
         if( !$this->packageOptions[ 'responseObject' ] && !$this->packageOptions[ 'responseArray' ] ) {
             return $content;
@@ -521,6 +540,9 @@ class Builder {
         $object->contentType = $responseData[ 'content_type' ];
         if( array_key_exists('errorMessage', $responseData) ) {
             $object->error = $responseData[ 'errorMessage' ];
+        }
+        if( $this->curlOptions[ 'HEADER' ] ) {
+            $object->header = $this->parseHeader( $header );
         }
 
         if( $this->packageOptions[ 'responseObject' ] ) {
@@ -575,4 +597,12 @@ class Builder {
         return $this->curlOptions[ 'URL' ] .= $parameterString;
     }
 
+    /**
+     * Get output header
+     *
+     * @return Builder
+     */
+    public function returnResponseHeader() {
+        return $this->withCurlOption( 'HEADER', TRUE );
+    }
 }
