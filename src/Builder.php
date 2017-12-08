@@ -253,6 +253,16 @@ class Builder {
     }
 
     /**
+     * Add response headers to the response object or response array
+     *
+     * @return Builder
+     */
+    public function withResponseHeaders()
+    {
+        return $this->withCurlOption( 'HEADER', TRUE );
+    }
+
+    /**
      * Return a full response object with HTTP status and headers instead of only the content
      *
      * @return Builder
@@ -475,11 +485,11 @@ class Builder {
         // Send the request
         $response = curl_exec( $this->curlObject );
 
-        $response_header = null;
-        if( $this->curlOptions[ 'HEADER' ]) {
-            $header_size = curl_getinfo( $this->curlObject, CURLINFO_HEADER_SIZE );
-            $response_header = substr( $response, 0, $header_size );
-            $response = substr( $response, $header_size );
+        $responseHeader = null;
+        if( $this->curlOptions[ 'HEADER' ] ) {
+            $headerSize = curl_getinfo( $this->curlObject, CURLINFO_HEADER_SIZE );
+            $responseHeader = substr( $response, 0, $headerSize );
+            $response = substr( $response, $headerSize );
         }
 
         // Capture additional request information if needed
@@ -509,26 +519,32 @@ class Builder {
         }
 
         // Return the result
-        return $this->returnResponse( $response_header, $response, $responseData );
+        return $this->returnResponse( $response, $responseData, $responseHeader );
     }
 
-    protected function parseHeader($response_header) {
-        $res = array_filter( array_map( function( $x ) {
-            $arr = array_map( "trim", explode( ":", $x, 2 ) );
-            if( sizeof($arr) == 2 ) {
-                return [$arr[0] => $arr[1]];
+    /**
+     * @param   string $headerString    Response header string
+     * @return mixed
+     */
+    protected function parseHeaders($headerString)
+    {
+        $headers = array_filter(array_map(function ($x) {
+            $arr = array_map('trim', explode(':', $x, 2));
+            if( count($arr) == 2 ) {
+                return [ $arr[ 0 ] => $arr[ 1 ] ];
             }
-        }, array_filter( array_map( "trim", explode( "\r\n", $response_header ) ) ) ) );
+        }, array_filter(array_map('trim', explode("\r\n", $headerString)))));
 
-        return array_collapse($res);
+        return array_collapse($headers);
     }
 
     /**
      * @param   mixed $content          Content of the request
      * @param   array $responseData     Additional response information
+     * @param   string $header          Response header string
      * @return mixed
      */
-    protected function returnResponse($header, $content, array $responseData = array())
+    protected function returnResponse($content, array $responseData = array(), $header = null)
     {
         if( !$this->packageOptions[ 'responseObject' ] && !$this->packageOptions[ 'responseArray' ] ) {
             return $content;
@@ -541,8 +557,9 @@ class Builder {
         if( array_key_exists('errorMessage', $responseData) ) {
             $object->error = $responseData[ 'errorMessage' ];
         }
+
         if( $this->curlOptions[ 'HEADER' ] ) {
-            $object->header = $this->parseHeader( $header );
+            $object->headers = $this->parseHeaders( $header );
         }
 
         if( $this->packageOptions[ 'responseObject' ] ) {
@@ -597,12 +614,4 @@ class Builder {
         return $this->curlOptions[ 'URL' ] .= $parameterString;
     }
 
-    /**
-     * Get output header
-     *
-     * @return Builder
-     */
-    public function returnResponseHeader() {
-        return $this->withCurlOption( 'HEADER', TRUE );
-    }
 }

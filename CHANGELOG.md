@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.16.0 - 2017-12-07
+### Added
+- Added method to return response headers in the response objects
+
 ## 6.15.1 - 2017-11-07
 ### Added
 - Bugfix: wrong variable used

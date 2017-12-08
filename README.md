@@ -408,6 +408,42 @@ The response object will look like this:
 }
 ```
 
+### Response headers
+
+In some cases it might be relevant to return the response headers back to the user. This can easily be done using the `withResponseHeaders()` method.
+
+```php
+
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a GET request to http://www.foo.com/bar and return a response object with additional information including response headers
+    $response = Curl::to('http://www.foo.com/bar')
+        ->withResponseHeaders()
+        ->returnResponseObject()
+        ->get();
+            
+    $content = $response->content;
+    $headers = $response->headers;
+
+```
+
+The response object will look like this:
+
+```json
+{
+    "content": "Message content here",
+    "status": 200,
+    "contentType": "content-type response header (ex: application/json)",
+    "error": "Error message goes here (Only added if an error occurs)",
+    "headers": {
+        "header-type-1": "header-content-1",
+        "header-type-2": "header-content-2"
+    }
+}
+```
+
+It is important to note that the `withResponseHeaders()` method must be used in conjunction with the `returnResponseObject()` method in order to see the returned headers
+
 
 ### Debugging requests
 
