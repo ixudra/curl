@@ -454,7 +454,8 @@ class Builder {
      */
     public function delete()
     {
-        $this->appendDataToURL();
+        // $this->appendDataToURL();
+        $this->setPostParameters();
 
         return $this->withOption('CUSTOMREQUEST', 'DELETE')
             ->send();
