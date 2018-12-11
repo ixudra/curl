@@ -477,7 +477,7 @@ any validation on the cURL options. Additional information about available cURL 
 | asJsonRequest()       |  false            | Submit the request data as JSON                                   |
 | asJsonResponse()      |  false            | Decode the response data from JSON                                |
 | asJson()              |  false            | Utility method to set both `asJsonRequest()` and `asJsonResponse()` at the same time   |
-| withHeader()          |  array            | Add an HTTP header to the request                                 |
+| withHeader()          |  string           | Add an HTTP header to the request                                 |
 | withHeaders()         |  array            | Add multiple HTTP headers to the request                          |
 | withContentType()     |  none             | Set the content type of the response                              |
 | withFile()            |  none             | Add a file to the form data to be sent                            |
