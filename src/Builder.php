@@ -154,7 +154,7 @@ class Builder {
      * Set any specific cURL option
      *
      * @param   string $key         The name of the cURL option
-     * @param   string $value       The value to which the option is to be set
+     * @param   mixed  $value       The value to which the option is to be set
      * @return Builder
      */
     public function withOption($key, $value)
