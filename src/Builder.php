@@ -29,6 +29,11 @@ class Builder {
         'files'                 => array(),
         'asJsonRequest'         => false,
         'asJsonResponse'        => false,
+
+        'asUrlEncoded'          => false,
+        'asXmlRequest'          => false,
+        'asXmlResponse'         => false,
+
         'returnAsArray'         => false,
         'responseObject'        => false,
         'responseArray'         => false,
@@ -104,6 +109,46 @@ class Builder {
     public function allowRedirect()
     {
         return $this->withCurlOption( 'FOLLOWLOCATION', true );
+    }
+    
+    /**
+     * Allow for header application/x-www-form-url-encoded
+     * @return Builder
+     */
+    public function asUrlEncoded(){
+        
+        return $this->withPackageOption("asUrlEncodedRequest", true)
+                ->withContentType('application/x-www-form-urlencoded');
+    }
+
+    /**
+     * Configure the package to encode and decode the request data as XML
+     * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
+     * @return Builder
+     */
+    public function asXML(){
+        return $this->asXMLRequest()
+                    ->asXMLResponse();
+    }
+
+     /**
+     * Configure the package to encode the request data to xml before sending it to the server
+     *
+     * @return Builder
+     */
+    public function asXMLRequest()
+    {
+        return $this->withPackageOption( 'asXMLRequest', true );
+    }
+
+    /**
+     * Configure the package to decode the request data from xml to an associative array
+     *
+     * @return Builder
+     */
+    public function asXMLResponse()
+    {
+        return $this->withPackageOption( 'asXMLResponse', true );
     }
 
     /**
@@ -400,6 +445,8 @@ class Builder {
 
         if( $this->packageOptions[ 'asJsonRequest' ] ) {
             $parameters = json_encode($parameters);
+        } elseif( $this->packageOptions[ 'asXMLRequest' ]) {
+            $parameters = null; //xml_encode($parameters);
         }
 
         $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
