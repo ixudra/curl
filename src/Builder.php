@@ -534,8 +534,19 @@ class Builder {
                 return [ $arr[ 0 ] => $arr[ 1 ] ];
             }
         }, array_filter(array_map('trim', explode("\r\n", $headerString)))));
-
-        return array_collapse($headers);
+        
+        $return = [];
+            
+        foreach($headers as $val){
+            $key = array_keys($val)[0];
+            if(isset($return[$key])){
+                $return[$key] = array_merge((array) $return[$key], [array_values($val)[0]]);
+            }else{
+                $return = array_merge($return, $val);
+            }
+        }
+    
+        return $return;    
     }
 
     /**
