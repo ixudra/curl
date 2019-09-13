@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.17.0 - 2019-09-13
+### Added
+- Added support for multiple response headers with the same name
+
 ## 6.16.0 - 2017-12-07
 ### Added
 - Added method to return response headers in the response objects

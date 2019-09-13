@@ -534,19 +534,29 @@ class Builder {
                 return [ $arr[ 0 ] => $arr[ 1 ] ];
             }
         }, array_filter(array_map('trim', explode("\r\n", $headerString)))));
-        
-        $return = [];
-            
-        foreach($headers as $val){
-            $key = array_keys($val)[0];
-            if(isset($return[$key])){
-                $return[$key] = array_merge((array) $return[$key], [array_values($val)[0]]);
-            }else{
-                $return = array_merge($return, $val);
+
+        $results = [];
+
+        foreach( $headers as $values ) {
+            if( !is_array($values) ) {
+                continue;
+            }
+
+            $key = array_keys($values)[ 0 ];
+            if( isset($results[ $key ]) ) {
+                $results[ $key ] = array_merge(
+                    (array) $results[ $key ],
+                    array( array_values($values)[ 0 ] )
+                );
+            } else {
+                $results = array_merge(
+                    $results,
+                    $values
+                );
             }
         }
-    
-        return $return;    
+
+        return $results;
     }
 
     /**
