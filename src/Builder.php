@@ -233,8 +233,17 @@ class Builder {
      */
     public function withHeaders(array $headers)
     {
+        $data = array();
+        foreach( $headers as $key => $value ) {
+            if( !is_numeric($key) ) {
+                $value = $key .': '. $value;
+            }
+
+            $data[] = $value;
+        }
+
         $this->curlOptions[ 'HTTPHEADER' ] = array_merge(
-            $this->curlOptions[ 'HTTPHEADER' ], $headers
+            $this->curlOptions[ 'HTTPHEADER' ], $data
         );
 
         return $this;
@@ -480,6 +489,7 @@ class Builder {
         // Create the request with all specified options
         $this->curlObject = curl_init();
         $options = $this->forgeOptions();
+        dd( $options );
         curl_setopt_array( $this->curlObject, $options );
 
         // Send the request

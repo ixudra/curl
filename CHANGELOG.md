@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.18.0 - 2019-11-01
+### Added
+- Added key-value support to `withHeaders()` method
+
 ## 6.17.0 - 2019-09-13
 ### Added
 - Added support for multiple response headers with the same name
