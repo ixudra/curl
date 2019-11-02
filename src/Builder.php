@@ -489,7 +489,7 @@ class Builder {
         // Create the request with all specified options
         $this->curlObject = curl_init();
         $options = $this->forgeOptions();
-        dd( $options );
+
         curl_setopt_array( $this->curlObject, $options );
 
         // Send the request
