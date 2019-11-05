@@ -26,9 +26,15 @@ class Builder {
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
         'data'                  => array(),
+        'xml'                   => null,
         'files'                 => array(),
         'asJsonRequest'         => false,
         'asJsonResponse'        => false,
+
+        'asUrlEncoded'          => false,
+        'asXMLRequest'          => false,
+        'asXMLResponse'         => false,
+
         'returnAsArray'         => false,
         'responseObject'        => false,
         'responseArray'         => false,
@@ -74,6 +80,17 @@ class Builder {
     }
 
     /**
+     * Add GET or POST data to the request
+     *
+     * @param   mixed $data     Array of data that is to be sent along with the request
+     * @return Builder
+     */
+    public function withXML(string $xml)
+    {
+        return $this->withPackageOption( 'xml', $xml );
+    }
+
+    /**
      * Add a file to the request
      *
      * @param   string $key          Identifier of the file (how it will be referenced by the server in the $_FILES array)
@@ -104,6 +121,44 @@ class Builder {
     public function allowRedirect()
     {
         return $this->withCurlOption( 'FOLLOWLOCATION', true );
+    }
+    
+    /**
+     * Allow for header application/x-www-form-url-encoded
+     * @return Builder
+     */
+    public function asUrlEncoded(){
+        return $this->withPackageOption("asUrlEncodedRequest", true);
+    }
+
+    /**
+     * Configure the package to encode and decode the request data as XML
+     * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
+     * @return Builder
+     */
+    public function asXML(){
+        return $this->asXMLRequest()
+                    ->asXMLResponse();
+    }
+
+     /**
+     * Configure the package to encode the request data to xml before sending it to the server
+     *
+     * @return Builder
+     */
+    public function asXMLRequest()
+    {
+        return $this->withPackageOption( 'asXMLRequest', true );
+    }
+
+    /**
+     * Configure the package to decode the request data from xml to an associative array
+     *
+     * @return Builder
+     */
+    public function asXMLResponse()
+    {
+        return $this->withPackageOption( 'asXMLResponse', true );
     }
 
     /**
@@ -390,16 +445,20 @@ class Builder {
     protected function setPostParameters()
     {
         $this->curlOptions[ 'POST' ] = true;
-
-        $parameters = $this->packageOptions[ 'data' ];
-        if( !empty($this->packageOptions[ 'files' ]) ) {
-            foreach( $this->packageOptions[ 'files' ] as $key => $file ) {
-                $parameters[ $key ] = $this->getCurlFileValue( $file[ 'fileName' ], $file[ 'mimeType' ], $file[ 'postFileName'] );
+        if(!empty($this->packageOptions[ 'asXMLRequest' ])){
+            $parameters = $this->packageOptions[ 'xml' ];
+        } else {
+            $parameters = $this->packageOptions[ 'data' ];
+        
+            if( !empty($this->packageOptions[ 'files' ]) ) {
+                foreach( $this->packageOptions[ 'files' ] as $key => $file ) {
+                    $parameters[ $key ] = $this->getCurlFileValue( $file[ 'fileName' ], $file[ 'mimeType' ], $file[ 'postFileName'] );
+                }
             }
-        }
 
-        if( $this->packageOptions[ 'asJsonRequest' ] ) {
-            $parameters = json_encode($parameters);
+            if( $this->packageOptions[ 'asJsonRequest' ] ) {
+                $parameters = json_encode($parameters);
+            }
         }
 
         $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
@@ -470,6 +529,10 @@ class Builder {
         // Add JSON header if necessary
         if( $this->packageOptions[ 'asJsonRequest' ] ) {
             $this->withHeader( 'Content-Type: application/json' );
+        } elseif($this->packageOptions[ 'asXMLRequest' ]) {
+            $this->withHeader( 'Content-Type: text/xml' );
+        } elseif($this->packageOptions[ 'asUrlEncoded' ]){
+            $this->withHeader( 'Content-Type: application/x-www-form-urlencoded' );
         }
 
         if( $this->packageOptions[ 'enableDebug' ] ) {
@@ -484,7 +547,6 @@ class Builder {
 
         // Send the request
         $response = curl_exec( $this->curlObject );
-
         $responseHeader = null;
         if( $this->curlOptions[ 'HEADER' ] ) {
             $headerSize = curl_getinfo( $this->curlObject, CURLINFO_HEADER_SIZE );
@@ -512,6 +574,8 @@ class Builder {
         } else if( $this->packageOptions[ 'asJsonResponse' ] ) {
             // Decode the request if necessary
             $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
+        } elseif($this->packageOptions[ 'asXMLResponse' ]){
+            $response = $response;
         }
 
         if( $this->packageOptions[ 'enableDebug' ] ) {
