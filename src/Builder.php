@@ -26,14 +26,14 @@ class Builder {
     /** @var array $packageOptions      Array with options that are not specific to cURL but are used by the package */
     protected $packageOptions = array(
         'data'                  => array(),
-        'xml'                   => null,
+        'xml'                   => null, //the withXML() method will assign an xml string (or any string) to this property
         'files'                 => array(),
         'asJsonRequest'         => false,
         'asJsonResponse'        => false,
-
-        'asUrlEncoded'          => false,
-        'asXMLRequest'          => false,
-        'asXMLResponse'         => false,
+        
+        'asUrlEncoded'          => false, // attaches the header 'Content-Type: application/x-www-form-urlencoded' 
+        'asXMLRequest'          => false, // attaches the header 'Content-Type: text/xml' with the request
+        'asXMLResponse'         => false, // return unparsed (hopefully xml) data from the response as a string
 
         'returnAsArray'         => false,
         'responseObject'        => false,
@@ -71,22 +71,29 @@ class Builder {
     /**
      * Add GET or POST data to the request
      *
-     * @param   mixed $data     Array of data that is to be sent along with the request
+     * @param   array|null|string $data     Array of data that is to be sent along with the request
      * @return Builder
      */
     public function withData($data = array())
     {
-        return $this->withPackageOption( 'data', $data );
+        if($data && $this->packageOptions[ 'asXMLRequest' ] ){
+            $this->withXML($data);
+        } else {       
+            return $this->withPackageOption( 'data', $data );
+        }
     }
 
     /**
-     * Add GET or POST data to the request
+     * Add XML data to the request
      *
-     * @param   mixed $data     Array of data that is to be sent along with the request
+     * @param   string $xml     This should be a raw XML string that will be sent with the request
      * @return Builder
      */
     public function withXML(string $xml)
     {
+        if($xml && !is_string($xml)){
+            throw new \InvalidArgumentException("XML requests require an XML string. You provided a ". gettype($xml) );
+        }
         return $this->withPackageOption( 'xml', $xml );
     }
 
@@ -132,8 +139,7 @@ class Builder {
     }
 
     /**
-     * Configure the package to encode and decode the request data as XML
-     * @param   boolean $asArray    Indicates whether or not the data should be returned as an array. Default: false
+     * Configure the package to attach the 'Content-Type: text/xml' 
      * @return Builder
      */
     public function asXML(){
