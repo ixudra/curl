@@ -399,6 +399,7 @@ class Builder {
       */
      public function download($fileName)
      {
+         $this->appendDataToURL();
          $this->packageOptions[ 'saveFile' ] = $fileName;
 
          return $this->send();
@@ -419,7 +420,7 @@ class Builder {
         }
 
         if( $this->packageOptions[ 'asJsonRequest' ] ) {
-            $parameters = json_encode($parameters);
+            $parameters = \json_encode($parameters);
         }
 
         $this->curlOptions[ 'POSTFIELDS' ] = $parameters;
@@ -474,7 +475,6 @@ class Builder {
      */
     public function delete()
     {
-        // $this->appendDataToURL();
         $this->setPostParameters();
 
         return $this->withOption('CUSTOMREQUEST', 'DELETE')
@@ -557,7 +557,7 @@ class Builder {
             }
         }, array_filter(array_map('trim', explode("\r\n", $headerString)))));
 
-        $results = [];
+        $results = array();
 
         foreach( $headers as $values ) {
             if( !is_array($values) ) {
@@ -627,7 +627,7 @@ class Builder {
         foreach( $this->curlOptions as $key => $value ) {
             $arrayKey = constant( 'CURLOPT_' . $key );
 
-            if( !$this->packageOptions[ 'containsFile' ] && $key == 'POSTFIELDS' && is_array( $value ) ) {
+            if( !$this->packageOptions[ 'containsFile' ] && $key === 'POSTFIELDS' && is_array( $value ) ) {
                 $results[ $arrayKey ] = http_build_query( $value, null, '&' );
             } else {
                 $results[ $arrayKey ] = $value;
