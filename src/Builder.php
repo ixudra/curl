@@ -261,6 +261,28 @@ class Builder {
     }
 
     /**
+     * Add an HTTP Authorization header to the request
+     *
+     * @param   string $token       The authorization token that is to be added to the request
+     * @return Builder
+     */
+    public function withAuthorization($token)
+    {
+        return $this->withHeader( 'Authorization: ' . $token );
+    }
+
+    /**
+     * Add a HTTP bearer authorization header to the request
+     *
+     * @param   string $bearer      The bearer token that is to be added to the request
+     * @return Builder
+     */
+    public function withBearer($bearer)
+    {
+        return $this->withAuthorization(  'Bearer '. $bearer );
+    }
+
+    /**
      * Add a content type HTTP header to the request
      *
      * @param   string $contentType    The content type of the file you would like to download

@@ -314,6 +314,24 @@ You can also use key-value when using the `withHeaders()` method:
 
 ```
 
+For (bearer) authorization headers, you can also use specific utility methods:
+
+```php
+
+    use Ixudra\Curl\Facades\Curl;
+
+    // Send a GET request to: http://www.foo.com/bar with "Authorization: 123" header
+    $response = Curl::to('http://foo.com/bar')
+        ->withAuthorization('123')
+        ->get();
+
+    // Send a GET request to: http://www.foo.com/bar with "Authorization: Bearer 123" header
+    $response = Curl::to('http://foo.com/bar')
+        ->withBearer('123')
+        ->get();
+
+```
+
  > Note that headers will override each other if you add the same header more than once.
 
 
