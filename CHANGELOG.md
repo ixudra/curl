@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.22.0 - 2021-11-14
+### Added
+- Added HEAD request support
+
 ## 6.21.0 - 2020-09-22
 ### Added
 - withAuthorization utility method

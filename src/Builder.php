@@ -20,6 +20,7 @@ class Builder {
         'POST'                  => false,
         'HTTPHEADER'            => array(),
         'SSL_VERIFYPEER'        => false,
+        'NOBODY'                => false,
         'HEADER'                => false,
     );
 
@@ -504,6 +505,20 @@ class Builder {
     }
 
     /**
+     * Send a HEAD request to a URL using the specified cURL options
+     *
+     * @return mixed
+     */
+    public function head()
+    {
+        $this->appendDataToURL();
+        $this->withCurlOption('NOBODY', true);
+        $this->withCurlOption('HEADER', true);
+
+        return $this->send();
+    }
+
+    /**
      * Send the request
      *
      * @return mixed
@@ -665,7 +680,7 @@ class Builder {
     }
 
     /**
-     * Append set data to the query string for GET and DELETE cURL requests
+     * Append set data to the query string for GET, HEAD and DELETE cURL requests
      *
      * @return string
      */
