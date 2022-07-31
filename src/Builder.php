@@ -665,7 +665,7 @@ class Builder {
             $arrayKey = constant( 'CURLOPT_' . $key );
 
             if( !$this->packageOptions[ 'containsFile' ] && $key === 'POSTFIELDS' && is_array( $value ) ) {
-                $results[ $arrayKey ] = http_build_query( $value, null, '&' );
+                $results[ $arrayKey ] = http_build_query( $value );
             } else {
                 $results[ $arrayKey ] = $value;
             }
@@ -688,7 +688,7 @@ class Builder {
     {
         $parameterString = '';
         if( is_array($this->packageOptions[ 'data' ]) && count($this->packageOptions[ 'data' ]) != 0 ) {
-            $parameterString = '?'. http_build_query( $this->packageOptions[ 'data' ], null, '&' );
+            $parameterString = '?'. http_build_query( $this->packageOptions[ 'data' ] );
         }
 
         return $this->curlOptions[ 'URL' ] .= $parameterString;

@@ -2,6 +2,10 @@
 
 All Notable changes to `ixudra/curl` will be documented in this file
 
+## 6.22.1 - 2022-07-31
+### Fixed
+- Use correct default values for http_build_query
+
 ## 6.22.0 - 2021-11-14
 ### Added
 - Added HEAD request support

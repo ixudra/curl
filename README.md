@@ -8,7 +8,7 @@ ixudra/curl
 
 ![Ixudra Curl](https://repository-images.githubusercontent.com/18486198/cd2b2080-de01-11e9-8fb1-e64ffe5e9816)
 
-Custom PHP cURL library for the Laravel 4 or 5 framework - developed by [Ixudra](http://ixudra.be).
+Custom PHP cURL library for the Laravel framework - developed by [Ixudra](http://ixudra.be).
 
 The package provides an easy interface for sending cURL requests from your PHP web application. The package provides an 
 intuitive, fluent interface similar the Laravel query builder to easily configure the request. Additionally, There are 
