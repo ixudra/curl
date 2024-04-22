@@ -19,7 +19,7 @@ class Builder {
         'URL'                   => '',
         'POST'                  => false,
         'HTTPHEADER'            => array(),
-        'SSL_VERIFYPEER'        => false,
+        'SSL_VERIFYPEER'        => true,
         'NOBODY'                => false,
         'HEADER'                => false,
     );
