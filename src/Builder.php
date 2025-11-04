@@ -195,7 +195,7 @@ class Builder {
     {
         return $this->withOption( 'COOKIEJAR', $cookieJar );
     }
-    
+
     /**
      * Set any specific cURL option
      *
@@ -569,8 +569,14 @@ class Builder {
             fwrite($file, $response);
             fclose($file);
         } else if( $this->packageOptions[ 'asJsonResponse' ] ) {
-            // Decode the request if necessary
+            $response_original = $response;
+            // Decode the request if necessary.
             $response = json_decode($response, $this->packageOptions[ 'returnAsArray' ]);
+
+            if (is_null($response) && is_string($response_original)) {
+              // It's likely that the response includes an error message.
+              $responseData[ 'errorMessage' ] = $response_original;
+            }
         }
 
         if( $this->packageOptions[ 'enableDebug' ] ) {
