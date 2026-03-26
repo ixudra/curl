@@ -561,7 +561,8 @@ class Builder {
             }
         }
 
-        curl_close( $this->curlObject );
+        // Unset the object for faster cleanup.
+        unset( $this->curlObject );
 
         if( $this->packageOptions[ 'saveFile' ] ) {
             // Save to file if a filename was specified
